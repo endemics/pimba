@@ -44,6 +44,8 @@ RUN pip install -U \
     youtube-dl \
     mopidy-youtube
 
+# For some reason, the python install in alpine does not include this dir
+# where gi is installed
 ENV PYTHONPATH /usr/lib/python2.7/site-packages:
 
 EXPOSE 6600 6680
