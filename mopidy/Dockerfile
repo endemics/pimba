@@ -41,8 +41,16 @@ RUN pip install -U \
     Mopidy-Simple-Webclient \
     mopidy-somafm \
     mopidy-spotify-tunigo \
-    youtube-dl \
-    mopidy-youtube
+    youtube-dl
+
+# Fix mopidy-youtube search: use natumbri/mopidy-youtube fork's branch feature/implement-scrAPI
+RUN apk -U add git
+WORKDIR /root
+RUN git clone https://github.com/natumbri/mopidy-youtube.git && \
+    cd mopidy-youtube && \
+    git checkout feature/implement-scrAPI && \
+    python2 setup.py build install && \
+    rm -rf mopidy-youtube
 
 # For some reason, the python install in alpine does not include this dir
 # where gi is installed
