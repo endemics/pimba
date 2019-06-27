@@ -22,7 +22,7 @@ jobs:
             --local dockerfile=./librespot \
             --local context=./librespot \
             --output type=image,name=docker.io/pimba/librespot
-        docker images
+      - docker images
     -
       name: "pimba/shairport docker image build"
       script:
@@ -33,7 +33,7 @@ jobs:
             --local dockerfile=./shairport \
             --local context=./shairport \
             --output type=image,name=docker.io/pimba/shairport
-        docker images
+      - docker images
     -
       name: "pimba/mopidy docker image build"
       script:
@@ -44,4 +44,4 @@ jobs:
             --local dockerfile=./mopidy \
             --local context=./mopidy \
             --output type=image,name=docker.io/pimba/mopidy
-        docker images
+      - docker images
