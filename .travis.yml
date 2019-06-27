@@ -22,7 +22,7 @@ jobs:
       name: "pimba/librespot docker image build & publication"
       script:
       - |
-        travis_wait 20 buildctl build --frontend=dockerfile.v0 \
+        buildctl build --frontend=dockerfile.v0 \
             --opt platform=linux/armhf \
             --opt filename=./Dockerfile \
             --local dockerfile=./librespot \
@@ -38,7 +38,7 @@ jobs:
       name: "pimba/shairport docker image build & publication"
       script:
       - |
-        travis_wait 20 buildctl build --frontend=dockerfile.v0 \
+        buildctl build --frontend=dockerfile.v0 \
             --opt platform=linux/armhf \
             --opt filename=./Dockerfile \
             --local dockerfile=./shairport \
@@ -54,7 +54,7 @@ jobs:
       name: "pimba/mopidy docker image build & publication"
       script:
       - |
-        travis_wait 20 buildctl build --frontend=dockerfile.v0 \
+        buildctl build --frontend=dockerfile.v0 \
             --opt platform=linux/armhf \
             --opt filename=./Dockerfile \
             --local dockerfile=./mopidy \
