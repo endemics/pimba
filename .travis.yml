@@ -21,7 +21,7 @@ jobs:
             --opt filename=./Dockerfile \
             --local dockerfile=./librespot \
             --local context=./librespot \
-            --output type=image,name=docker.io/pimba/librespot
+            --output type=docker,name=docker.io/pimba/librespot | docker load
       - docker images
     -
       name: "pimba/shairport docker image build"
@@ -32,7 +32,7 @@ jobs:
             --opt filename=./Dockerfile \
             --local dockerfile=./shairport \
             --local context=./shairport \
-            --output type=image,name=docker.io/pimba/shairport
+            --output type=docker,name=docker.io/pimba/shairport | docker load
       - docker images
     -
       name: "pimba/mopidy docker image build"
@@ -43,5 +43,5 @@ jobs:
             --opt filename=./Dockerfile \
             --local dockerfile=./mopidy \
             --local context=./mopidy \
-            --output type=image,name=docker.io/pimba/mopidy
+            --output type=docker,name=docker.io/pimba/mopidy | docker load
       - docker images
