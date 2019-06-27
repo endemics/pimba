@@ -1,47 +1,65 @@
 dist: xenial
 language: minimal
 
+services:
+- docker
+
 before_install:
 - sudo docker run --privileged linuxkit/binfmt:v0.6
 - sudo docker run -d --privileged -p 1234:1234 --name buildkit moby/buildkit:latest --addr tcp://0.0.0.0:1234 --oci-worker-platform linux/armhf
 - sudo docker cp buildkit:/usr/bin/buildctl /usr/bin/
 - export BUILDKIT_HOST=tcp://0.0.0.0:1234
 
-services:
-- docker
+before_script:
+- echo -e "commit: $TRAVIS_COMMIT\ntag: $TRAVIS_TAG\nbranch: $TRAVIS_BRANCH\nbuild: $TRAVIS_BUILD_NUMBER"
 
 jobs:
   include:
-    - stage: build
-      name: "pimba/librespot docker image build"
+    - stage: docker
+      name: "pimba/librespot docker image build & publication"
       script:
       - |
-        buildctl build --frontend=dockerfile.v0 \
+        travis_wait 20 buildctl build --frontend=dockerfile.v0 \
             --opt platform=linux/armhf \
             --opt filename=./Dockerfile \
             --local dockerfile=./librespot \
             --local context=./librespot \
             --output type=docker,name=docker.io/pimba/librespot | docker load
       - docker images
+      - |
+        if [ "$TRAVIS_BRANCH" = master ]; then
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker push docker.io/pimba/librespot
+        fi
     -
-      name: "pimba/shairport docker image build"
+      name: "pimba/shairport docker image build & publication"
       script:
       - |
-        buildctl build --frontend=dockerfile.v0 \
+        travis_wait 20 buildctl build --frontend=dockerfile.v0 \
             --opt platform=linux/armhf \
             --opt filename=./Dockerfile \
             --local dockerfile=./shairport \
             --local context=./shairport \
             --output type=docker,name=docker.io/pimba/shairport | docker load
       - docker images
+      - |
+        if [ "$TRAVIS_BRANCH" = master ]; then
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker push docker.io/pimba/shairport
+        fi
     -
-      name: "pimba/mopidy docker image build"
+      name: "pimba/mopidy docker image build & publication"
       script:
       - |
-        buildctl build --frontend=dockerfile.v0 \
+        travis_wait 20 buildctl build --frontend=dockerfile.v0 \
             --opt platform=linux/armhf \
             --opt filename=./Dockerfile \
             --local dockerfile=./mopidy \
             --local context=./mopidy \
             --output type=docker,name=docker.io/pimba/mopidy | docker load
       - docker images
+      - |
+        if [ "$TRAVIS_BRANCH" = master ]; then
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker push docker.io/pimba/mopidy
+        fi
