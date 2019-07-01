@@ -19,25 +19,25 @@ before_script:
 jobs:
   include:
     - stage: docker
-      name: "pimba/librespot docker image build & publication"
-      script:
-      - |
-        while sleep 9m; do
-          echo "====[ $SECONDS seconds still running ]===="
-        done &
-        buildctl build --frontend=dockerfile.v0 \
-            --opt platform=linux/armhf \
-            --opt filename=./Dockerfile \
-            --local dockerfile=./librespot \
-            --local context=./librespot \
-            --output type=docker,name=docker.io/pimba/librespot | docker load
-      - docker images
-      - |
-        if [ "$TRAVIS_BRANCH" = master ]; then
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker push docker.io/pimba/librespot
-        fi
-    -
+#      name: "pimba/librespot docker image build & publication"
+#      script:
+#      - |
+#        while sleep 9m; do
+#          echo "====[ $SECONDS seconds still running ]===="
+#        done &
+#        buildctl build --frontend=dockerfile.v0 \
+#            --opt platform=linux/armhf \
+#            --opt filename=./Dockerfile \
+#            --local dockerfile=./librespot \
+#            --local context=./librespot \
+#            --output type=docker,name=docker.io/pimba/librespot | docker load
+#      - docker images
+#      - |
+#        if [ "$TRAVIS_BRANCH" = master ]; then
+#          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+#          docker push docker.io/pimba/librespot
+#        fi
+#    -
       name: "pimba/shairport docker image build & publication"
       script:
       - |
