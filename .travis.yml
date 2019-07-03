@@ -1,8 +1,22 @@
 dist: xenial
-language: minimal
+language: go
+
+go:
+- 1.11.x
 
 services:
 - docker
+
+cache:
+  directories:
+    - $HOME/qemu
+    - $HOME/packer
+
+addons:
+  apt:
+    update: true
+    packages:
+    - kpartx
 
 before_install:
 - sudo docker run --privileged linuxkit/binfmt:v0.6
@@ -15,6 +29,9 @@ before_script:
 - "echo tag: $TRAVIS_TAG"
 - "echo branch: $TRAVIS_BRANCH"
 - "echo build: $TRAVIS_BUILD_NUMBER"
+- bash bin/travis-qemu.sh
+- bash bin/travis-packer.sh
+- export PATH=$PATH:$HOME/qemu/bin:$HOME/packer/bin/
 
 jobs:
   include:
@@ -72,3 +89,8 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           docker push docker.io/pimba/mopidy
         fi
+    - stage: packer
+      name: "enlarge raspbian disk image and activate ssh"
+      script:
+      - sudo packer build packer.json
+      - ls -lh pimba.img
