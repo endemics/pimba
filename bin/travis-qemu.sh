@@ -35,7 +35,6 @@ cd "qemu-$VERSION"
 
 make -j4
 make install
-ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
 
 # Install the good stuff from https://github.com/dhruvvyas90/qemu-rpi-kernel
 mkdir -p $HOME/qemu/rpi-kernel

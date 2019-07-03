@@ -92,7 +92,7 @@ jobs:
     - stage: packer
       name: "enlarge raspbian disk image and activate ssh"
       script:
-      - ls -l ~/qemu/bin/
+      - sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
       - wget https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
       - sudo env "PATH=$PATH" ~/packer/bin/packer build packer.json
       - ls -lh pimba.img
