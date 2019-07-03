@@ -92,5 +92,6 @@ jobs:
     - stage: packer
       name: "enlarge raspbian disk image and activate ssh"
       script:
+      - ls -l $HOME/packer/bin
       - sudo packer build packer.json
       - ls -lh pimba.img
