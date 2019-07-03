@@ -92,6 +92,7 @@ jobs:
     - stage: packer
       name: "enlarge raspbian disk image and activate ssh"
       script:
+      - ln -s ~/qemu/bin/qemu-arm ~/qemu/bin/qemu-arm-static
       - sudo env "PATH=$PATH" echo $PATH
       - sudo env "PATH=$PATH" ~/packer/bin/packer build packer.json
       - ls -lh pimba.img

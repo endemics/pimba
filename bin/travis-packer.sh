@@ -25,5 +25,4 @@ go mod download
 go build
 mv packer-builder-arm-image ${HOME}/packer/bin/packer-builder-arm-image
 
-
 echo "${VERSION}" > ${HOME}/packer/.build
