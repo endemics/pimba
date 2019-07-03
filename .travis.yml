@@ -31,7 +31,6 @@ before_script:
 - "echo build: $TRAVIS_BUILD_NUMBER"
 - bash bin/travis-qemu.sh
 - bash bin/travis-packer.sh
-- export PATH=$PATH:$HOME/qemu/bin:$HOME/packer/bin/
 
 jobs:
   include:
@@ -94,5 +93,5 @@ jobs:
       script:
       - sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
       - wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
-      - sudo env "PATH=$PATH" ~/packer/bin/packer build packer.json
+      - sudo ~/packer/bin/packer build packer.json
       - ls -lh pimba.img
