@@ -1,8 +1,22 @@
 dist: xenial
-language: minimal
+language: go
+
+go:
+- 1.11.x
 
 services:
 - docker
+
+cache:
+  directories:
+    - $HOME/qemu
+    - $HOME/packer
+
+addons:
+  apt:
+    update: true
+    packages:
+    - kpartx
 
 before_install:
 - sudo docker run --privileged linuxkit/binfmt:v0.6
@@ -15,29 +29,26 @@ before_script:
 - "echo tag: $TRAVIS_TAG"
 - "echo branch: $TRAVIS_BRANCH"
 - "echo build: $TRAVIS_BUILD_NUMBER"
+- bash bin/travis-qemu.sh
+- bash bin/travis-packer.sh
 
 jobs:
   include:
     - stage: docker
-#      name: "pimba/librespot docker image build & publication"
-#      script:
-#      - |
-#        while sleep 9m; do
-#          echo "====[ $SECONDS seconds still running ]===="
-#        done &
-#        buildctl build --frontend=dockerfile.v0 \
-#            --opt platform=linux/armhf \
-#            --opt filename=./Dockerfile \
-#            --local dockerfile=./librespot \
-#            --local context=./librespot \
-#            --output type=docker,name=docker.io/pimba/librespot | docker load
-#      - docker images
-#      - |
-#        if [ "$TRAVIS_BRANCH" = master ]; then
-#          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-#          docker push docker.io/pimba/librespot
-#        fi
-#    -
+      name: "pimba/librespot docker image build & publication"
+      script:
+      - |
+        while sleep 9m; do
+          echo "====[ $SECONDS seconds still running ]===="
+        done &
+        cd librespot && make build
+      - docker images
+      - |
+        if [ "$TRAVIS_BRANCH" = master ]; then
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker push docker.io/pimba/librespot
+        fi
+    -
       name: "pimba/shairport docker image build & publication"
       script:
       - |
@@ -72,3 +83,19 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           docker push docker.io/pimba/mopidy
         fi
+    - stage: packer
+      name: "enlarge raspbian disk image and activate ssh"
+      script:
+      - sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
+      - wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
+      - sudo ~/packer/bin/packer build packer.json
+      - ls -lh pimba.img
+      - |
+        sudo ~/qemu/bin/qemu-system-arm \
+          -M versatilepb -cpu arm1176 -m 256 \
+          -hda ./pimba.img \
+          -net nic -net user,hostfwd=tcp::2222-:22 \
+          -dtb ~/qemu/rpi-kernel/versatile-pb.dtb \
+          -kernel ~/qemu/rpi-kernel/kernel-qemu-4.14.79-stretch \
+          -append 'root=/dev/sda2 panic=1' \
+          -no-reboot
