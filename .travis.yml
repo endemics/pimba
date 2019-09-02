@@ -41,12 +41,7 @@ jobs:
         while sleep 9m; do
           echo "====[ $SECONDS seconds still running ]===="
         done &
-        buildctl build --frontend=dockerfile.v0 \
-          --opt platform=linux/armhf \
-          --opt filename=./Dockerfile \
-          --local dockerfile=./librespot \
-          --local context=./librespot \
-          --output type=docker,name=docker.io/pimba/librespot | docker load
+        cd librespot && make build
       - docker images
       - |
         if [ "$TRAVIS_BRANCH" = master ]; then
