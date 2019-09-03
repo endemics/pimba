@@ -104,7 +104,7 @@ jobs:
           -kernel ~/qemu/rpi-kernel/kernel-qemu-4.14.79-stretch \
           -append 'root=/dev/sda2 panic=1' \
           -no-reboot &
-      - pip install ansible
+      - sudo pip install ansible
       - |
         echo "====[ Waiting for raspberrypi to finish booting ]===="
         while ! nc -w1 -z localhost 2222; do
