@@ -1,0 +1,14 @@
+# pimba.service
+[Unit]
+Description=pimba
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStartPre=/usr/bin/docker-compose -f /boot/pimba/docker-compose.yaml down
+ExecStart=/usr/bin/docker-compose -f /boot/pimba/docker-compose.yaml up
+ExecStop=/usr/bin/docker-compose -f /boot/pimba/docker-compose.yaml down
+
+[Install]
+WantedBy=multi-user.target

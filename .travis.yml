@@ -17,6 +17,7 @@ addons:
     update: true
     packages:
     - kpartx
+    - python-pip
 
 before_install:
 - sudo docker run --privileged linuxkit/binfmt:v0.6
