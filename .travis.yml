@@ -108,7 +108,7 @@ jobs:
       - sudo pip install ansible
       - |
         echo "====[ Waiting for raspberrypi to finish booting ]===="
-        while ! nc -w1 -z localhost 2222; do
+        while ! sshpass -praspberry ssh -p2222 -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no -oConnectTimeout=1 -q pi@localhost "exit"; do
           sleep 5
           echo -n '.'
         done
