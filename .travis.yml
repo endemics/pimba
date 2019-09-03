@@ -18,6 +18,7 @@ addons:
     packages:
     - kpartx
     - python-pip
+    - sshpass
 
 before_install:
 - sudo docker run --privileged linuxkit/binfmt:v0.6
