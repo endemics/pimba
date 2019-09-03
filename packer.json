@@ -3,9 +3,9 @@
   },
   "builders": [{
     "type": "arm-image",
-    "iso_url" : "2019-04-08-raspbian-stretch-lite.zip",
+    "iso_url" : "2019-07-10-raspbian-buster-lite.zip",
     "iso_checksum_type" : "sha256",
-    "iso_checksum" : "03ec326d45c6eb6cef848cf9a1d6c7315a9410b49a276a6b28e67a40b11fdfcf",
+    "iso_checksum" : "9e5cf24ce483bb96e7736ea75ca422e3560e7b455eee63dd28f66fa1825db70e",
     "last_partition_extra_size" : 4294967296,
     "output_directory" : "/tmp"
   }],
