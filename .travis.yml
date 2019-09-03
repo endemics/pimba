@@ -17,6 +17,7 @@ addons:
     update: true
     packages:
     - kpartx
+    - python-pip
 
 before_install:
 - sudo docker run --privileged linuxkit/binfmt:v0.6
@@ -91,6 +92,10 @@ jobs:
       - sudo ~/packer/bin/packer build packer.json
       - ls -lh pimba.img
       - |
+        while sleep 9m; do
+          echo "====[ $SECONDS seconds still running ]===="
+        done &
+      - |
         sudo ~/qemu/bin/qemu-system-arm \
           -M versatilepb -cpu arm1176 -m 256 \
           -hda ./pimba.img \
@@ -98,4 +103,16 @@ jobs:
           -dtb ~/qemu/rpi-kernel/versatile-pb.dtb \
           -kernel ~/qemu/rpi-kernel/kernel-qemu-4.14.79-stretch \
           -append 'root=/dev/sda2 panic=1' \
-          -no-reboot
+          -no-reboot &
+      - pip install ansible
+      - |
+        echo "====[ Waiting for raspberrypi to finish booting ]===="
+        while ! nc -w1 -z localhost 2222; do
+          sleep 5
+          echo -n '.'
+        done
+      - |
+        ANSIBLE_HOST_KEY_CHECKING=False \
+          ansible-playbook playbook.yaml -u pi \
+            -i "127.0.0.1:2222," \
+            -e "ansible_ssh_pass=raspberry"

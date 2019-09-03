@@ -1,0 +1,72 @@
+---
+- hosts: all
+  gather_facts: yes
+  vars:
+    packages_to_install:
+    - kernel-package
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg2
+    - software-properties-common
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-compose
+  become: yes
+  tasks:
+    - name: get docker repository gpg key
+      apt_key: url=https://download.docker.com/linux/debian/gpg
+    - name: add docker package list
+      copy:
+        dest: /etc/apt/sources.list.d/docker.list
+        content: deb [arch=armhf] https://download.docker.com/linux/debian buster stable
+    - name: install packages
+      apt: pkg={{ packages_to_install }} state=present update_cache=yes
+    - name: configure avahi watcher service
+      copy:
+        dest: /etc/systemd/system/avahi-watcher.service
+        content: |
+          [Unit]
+          Description=avahi reloader
+          After=network.target
+
+          [Service]
+          Type=oneshot
+          ExecStart=/bin/systemctl reload avahi-daemon.service
+
+          [Install]
+          WantedBy=multi-user.target
+    - name: configure path of avahi watcher service
+      copy:
+        dest: /etc/systemd/system/avahi-watcher.path
+        content: |
+          [Path]
+          PathModified=/etc/avahi/services/
+
+          [Install]
+          WantedBy=multi-user.target
+    - name: Create pimba config folder
+      file:
+        path: /boot/pimba/
+        recurse: yes
+        state: directory
+    - name: copy docker-compose file
+      copy:
+        src: docker-compose.yaml
+        dest: /boot/pimba/docker-compose.yaml
+    - name: systemd service for docker-compose
+      copy:
+        src: pimba.service
+        dest: /etc/systemd/system/pimba.service
+    - name: enable and start all systemd services
+      systemd: name={{ item }} enabled=yes state=started daemon_reload=yes
+      with_items:
+        - avahi-watcher.path
+        - avahi-watcher.service
+        - pimba.service
+    - name: configure terminal to use us keyboard
+      lineinfile:
+        path: /etc/default/keyboard
+        regexp: '^XKBLAYOUT='
+        line: XKBLAYOUT="us"
