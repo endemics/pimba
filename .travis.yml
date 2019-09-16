@@ -89,31 +89,11 @@ jobs:
       name: "enlarge raspbian disk image and activate ssh"
       script:
       - sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
+      - sudo pip install ansible
       - wget -nv "http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-07-12/2019-07-10-raspbian-buster-lite.zip"
-      - sudo ~/packer/bin/packer build packer.json
-      - ls -lh pimba.img
       - |
         while sleep 9m; do
           echo "====[ $SECONDS seconds still running ]===="
         done &
-      - |
-        sudo ~/qemu/bin/qemu-system-arm \
-          -M versatilepb -cpu arm1176 -m 256 \
-          -hda ./pimba.img \
-          -net nic -net user,hostfwd=tcp::2222-:22 \
-          -dtb ~/qemu/rpi-kernel/versatile-pb.dtb \
-          -kernel ~/qemu/rpi-kernel/kernel-qemu-4.14.79-stretch \
-          -append 'root=/dev/sda2 panic=1' \
-          -no-reboot &
-      - sudo pip install ansible
-      - |
-        echo "====[ Waiting for raspberrypi to finish booting ]===="
-        while ! sshpass -praspberry ssh -p2222 -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no -oConnectTimeout=1 -q pi@localhost "exit"; do
-          sleep 5
-          echo -n '.'
-        done
-      - |
-        ANSIBLE_HOST_KEY_CHECKING=False \
-          ansible-playbook playbook.yaml -u pi \
-            -i "localhost:2222," \
-            -e "ansible_ssh_pass=raspberry"
+      - sudo ~/packer/bin/packer build packer.json
+      - ls -lh pimba.img

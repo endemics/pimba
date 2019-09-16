@@ -9,10 +9,16 @@
     "last_partition_extra_size" : 4294967296,
     "output_directory" : "/tmp"
   }],
-  "provisioners": [{
-    "type": "shell",
-    "inline": ["touch /boot/ssh && echo 'ssh activated'"]
-  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["touch /boot/ssh && echo 'ssh activated'"]
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./playbook.yaml"
+    }
+  ],
   "post-processors": [{
     "type": "shell-local",
     "inline": [
