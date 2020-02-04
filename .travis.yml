@@ -19,12 +19,6 @@ addons:
     packages:
     - kpartx
 
-before_install:
-- sudo docker run --privileged linuxkit/binfmt:v0.6
-- sudo docker run -d --privileged -p 1234:1234 --name buildkit moby/buildkit:latest --addr tcp://0.0.0.0:1234 --oci-worker-platform linux/armhf
-- sudo docker cp buildkit:/usr/bin/buildctl /usr/bin/
-- export BUILDKIT_HOST=tcp://0.0.0.0:1234
-
 before_script:
 - "echo commit: $TRAVIS_COMMIT"
 - "echo tag: $TRAVIS_TAG"
@@ -37,11 +31,7 @@ jobs:
     - stage: docker
       name: "pimba/librespot docker image build & publication"
       script:
-      - |
-        while sleep 9m; do
-          echo "====[ $SECONDS seconds still running ]===="
-        done &
-        cd librespot && make build
+      - cd librespot && make build
       - docker images
       - |
         if [ "$TRAVIS_BRANCH" = master ]; then
@@ -51,13 +41,7 @@ jobs:
     -
       name: "pimba/shairport docker image build & publication"
       script:
-      - |
-        buildctl build --frontend=dockerfile.v0 \
-            --opt platform=linux/armhf \
-            --opt filename=./Dockerfile \
-            --local dockerfile=./shairport \
-            --local context=./shairport \
-            --output type=docker,name=docker.io/pimba/shairport | docker load
+      - cd pimba/shairport && make build
       - docker images
       - |
         if [ "$TRAVIS_BRANCH" = master ]; then
@@ -67,16 +51,7 @@ jobs:
     -
       name: "pimba/mopidy docker image build & publication"
       script:
-      - |
-        while sleep 9m; do
-          echo "====[ $SECONDS seconds still running ]===="
-        done &
-        buildctl build --frontend=dockerfile.v0 \
-            --opt platform=linux/armhf \
-            --opt filename=./Dockerfile \
-            --local dockerfile=./mopidy \
-            --local context=./mopidy \
-            --output type=docker,name=docker.io/pimba/mopidy | docker load
+      - cd mopidy && make build
       - docker images
       - |
         if [ "$TRAVIS_BRANCH" = master ]; then
@@ -86,7 +61,6 @@ jobs:
     - stage: packer
       name: "enlarge raspbian disk image and activate ssh"
       script:
-      - sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
       - wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
       - sudo ~/packer/bin/packer build packer.json
       - ls -lh pimba.img
