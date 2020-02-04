@@ -1,11 +1,13 @@
 FROM debian:stretch AS build
 
-RUN apt-get update && \
+RUN dpkg --add-architecture armhf && \
+    apt-get update && \
     apt-get install -y \
         curl \
         git \
         build-essential \
-        libasound2-dev \
+        crossbuild-essential-armhf \
+        libasound2-dev libasound2-dev:armhf \
         pkg-config
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
