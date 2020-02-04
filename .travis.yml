@@ -41,7 +41,7 @@ jobs:
     -
       name: "pimba/shairport docker image build & publication"
       script:
-      - cd pimba/shairport && make build
+      - cd shairport && make build
       - docker images
       - |
         if [ "$TRAVIS_BRANCH" = master ]; then
