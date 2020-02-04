@@ -18,6 +18,11 @@ RUN cat /.cargo/config # DEBUG
 RUN mkdir /build
 ENV CARGO_TARGET_DIR /build
 ENV CARGO_HOME /build/cache
+ENV TARGET armv7-unknown-linux-gnueabihf
+
+# alsa-sys :(
+ENV PKG_CONFIG_ALLOW_CROSS 1
+ENV PKG_CONFIG_PATH /usr/lib/arm-linux-gnueabihf/pkgconfig
 
 RUN git clone https://github.com/librespot-org/librespot.git /src
 WORKDIR /src
