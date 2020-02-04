@@ -13,7 +13,7 @@ ENV PATH="/root/.cargo/bin/:${PATH}"
 RUN rustup target add armv7-unknown-linux-gnueabihf
 
 RUN mkdir -p /.cargo && \
-    echo -e '[target.armv7-unknown-linux-gnueabihf]\nlinker = "arm-linux-gnueabihf-gcc"' > /.cargo/config
+    echo '[target.armv7-unknown-linux-gnueabihf]\nlinker = "arm-linux-gnueabihf-gcc"' > /.cargo/config
 RUN cat /.cargo/config # DEBUG
 RUN mkdir /build
 ENV CARGO_TARGET_DIR /build
