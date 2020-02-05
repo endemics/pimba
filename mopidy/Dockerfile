@@ -17,7 +17,7 @@ RUN wget https://mopidy.github.io/libspotify-archive/libspotify-12.1.103-Linux-a
     rm -rf libspotify-12.1.103-Linux-armv6-bcm2708hardfp-release*
 
 RUN pip install -U \
-    mopidy \
+    mopidy==2.3.1 \
     mopidy-local-sqlite \
     mopidy-scrobbler \
     mopidy-soundcloud \
@@ -34,16 +34,17 @@ RUN pip install -U \
     Mopidy-Simple-Webclient \
     mopidy-somafm \
     mopidy-spotify-tunigo \
-    youtube-dl
+    youtube-dl \
+    mopidy-youtube
 
-# Fix mopidy-youtube search: use natumbri/mopidy-youtube fork's branch feature/implement-scrAPI
+# Fix mopidy-youtube
 WORKDIR /root
-RUN git clone https://github.com/natumbri/mopidy-youtube.git && \
-    cd mopidy-youtube && \
-    git checkout feature/implement-scrAPI && \
-    python2 setup.py build install && \
-    cd .. && \
-    rm -rf mopidy-youtube
+#RUN git clone https://github.com/natumbri/mopidy-youtube.git && \
+#    cd mopidy-youtube && \
+#    git checkout v2.1.0 && \
+#    python2 setup.py build install && \
+#    cd .. && \
+#    rm -rf mopidy-youtube
 
 # Fix mopidy-spotify using kingosticks web api playlist branch
 RUN git clone https://github.com/kingosticks/mopidy-spotify.git && \
