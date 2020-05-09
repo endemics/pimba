@@ -1,0 +1,37 @@
+version: '2'
+services:
+    librespot:
+        container_name: "librespot"
+        devices:
+            - "/dev/snd"
+        volumes:
+            - /etc/asound.conf:/etc/asound.conf:ro
+            - /etc/avahi/services:/etc/avahi/services
+        ports:
+            - "4070:4070"
+        image: pimba/librespot:latest
+        command: -n pi --zeroconf-port 4070 --onevent /librespot/mpc_stop.sh
+
+    shairport:
+        container_name: "shairport"
+        devices:
+            - "/dev/snd"
+        volumes:
+            - /etc/asound.conf:/etc/asound.conf:ro
+            - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+        network_mode: "host"
+        image: pimba/shairport:latest
+
+    mopidy:
+        container_name: "mopidy"
+        devices:
+            - "/dev/snd"
+        volumes:
+            - /etc/asound.conf:/etc/asound.conf:ro
+            - /etc/avahi/services:/etc/avahi/services
+            - /home/pi/config/settings.ini:/boot/config/settings.ini
+        ports:
+            - "80:6680"
+            - "6600:6600"
+        image: pimba/mopidy:latest
+        command: -o mpd/hostname=0.0.0.0 -o http/hostname=0.0.0.0
