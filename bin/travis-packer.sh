@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION=${PACKER_VERSION:=1.4.2}
+VERSION=${PACKER_VERSION:=1.5.6}
 
 if echo "${VERSION}" | cmp --silent ${HOME}/packer/.build -; then
   echo "packer ${VERSION} up to date!"
