@@ -29,15 +29,14 @@ before_script:
 - "echo build: $TRAVIS_BUILD_NUMBER"
 - bash bin/travis-qemu.sh
 - bash bin/travis-packer.sh
-- pip install --user ansible
-- export PATH=$PATH:$HOME/qemu/bin:$HOME/packer/bin/
 
 jobs:
   include:
     - stage: packer
       name: "enlarge raspbian disk image and activate ssh"
       script:
+      - sudo pip install ansible
       - sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
       - wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
-      - sudo env "PATH=$PATH" ~/packer/bin/packer build packer.json
+      - sudo env "PATH=$PATH:$HOME/qemu/bin:$HOME/packer/bin/" ~/packer/bin/packer build packer.json
       - ls -lh pimba.img
