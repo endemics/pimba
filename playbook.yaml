@@ -20,7 +20,7 @@
     - name: add docker package list
       copy:
         dest: /etc/apt/sources.list.d/docker.list
-        content: deb [arch=armhf] https://download.docker.com/linux/debian buster stable
+        content: deb [arch=armhf] https://download.docker.com/linux/debian stretch stable
     - name: install packages
       apt: pkg={{ packages_to_install }} state=present update_cache=yes
     - name: configure avahi watcher service
