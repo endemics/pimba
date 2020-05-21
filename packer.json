@@ -11,12 +11,28 @@
     "output_filename" : "/tmp/image",
     "mount_path": "{{ user `img_mount_path` }}"
   }],
-  "provisioners": [{
-    "type": "shell-local",
-    "inline": [
-      "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot playbook.yaml"
-    ]
-  }],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "inline": [
+        "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot playbook.yaml"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "spec",
+      "destination": "/tmp/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "apt-get update",
+        "apt-get install -y ruby",
+        "gem install serverspec --no-ri --no-rdoc",
+        "rspec /tmp/spec/localhost/*_spec.rb"
+      ]
+    }
+  ],
   "post-processors": [{
     "type": "shell-local",
     "inline": [
