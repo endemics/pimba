@@ -19,9 +19,23 @@
       ]
     },
     {
+      "type": "shell",
+      "inline": [ "mkdir -p /tmp/serverspec" ]
+    },
+    {
+      "type": "file",
+      "source": "Rakefile",
+      "destination": "/tmp/serverspec/Rakefile"
+    },
+    {
+      "type": "file",
+      "source": ".rspec",
+      "destination": "/tmp/serverspec/.rspec"
+    },
+    {
       "type": "file",
       "source": "spec",
-      "destination": "/tmp/"
+      "destination": "/tmp/serverspec/"
     },
     {
       "type": "shell",
@@ -29,7 +43,7 @@
         "apt-get update",
         "apt-get install -y ruby",
         "gem install serverspec --no-ri --no-rdoc",
-        "rspec /tmp/spec/localhost/*_spec.rb"
+        "cd /tmp/serverspec && rake spec"
       ]
     }
   ],
