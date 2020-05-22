@@ -1,22 +1,6 @@
 ---
 - hosts: all
   gather_facts: yes
-  vars:
-    packages_to_install:
-    - kernel-package
-    - apt-transport-https
-    - ca-certificates
-    - curl
-    - gnupg2
-    - software-properties-common
-    - docker-ce
-    - docker-ce-cli
-    - containerd.io
-    - docker-compose
-    debian_distro: stretch
   become: yes
   tasks:
-    - include_tasks: tasks/docker.yaml
-    - include_tasks: tasks/avahi_watcher.yaml
-    - include_tasks: tasks/pimba.yaml
-    - include_tasks: tasks/system.yaml
+    - include_tasks: tasks/ssh.yaml

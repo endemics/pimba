@@ -1,0 +1,4 @@
+- name: create /boot/ssh file to activate ssh service
+  copy:
+    dest: /boot/ssh
+    content: ""
