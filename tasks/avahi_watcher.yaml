@@ -1,0 +1,30 @@
+- name: configure avahi watcher service
+  copy:
+    dest: /etc/systemd/system/avahi-watcher.service
+    content: |
+      [Unit]
+      Description=avahi reloader
+      After=network.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/bin/systemctl reload avahi-daemon.service
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: configure path of avahi watcher service
+  copy:
+    dest: /etc/systemd/system/avahi-watcher.path
+    content: |
+      [Path]
+      PathModified=/etc/avahi/services/
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: enable and start avahi-watcher systemd services
+  systemd: name={{ item }} enabled=yes state=started daemon_reload=yes
+  with_items:
+    - avahi-watcher.path
+    - avahi-watcher.service

@@ -30,6 +30,7 @@ before_script:
 - bash bin/travis-qemu.sh
 - bash bin/travis-packer.sh
 - export PATH=$PATH:$HOME/qemu/bin:$HOME/packer/bin/
+- sudo pip install ansible
 
 jobs:
   include:
