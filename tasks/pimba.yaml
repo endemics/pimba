@@ -1,0 +1,18 @@
+- name: Create pimba config folder
+  file:
+    path: /boot/pimba/
+    recurse: yes
+    state: directory
+
+- name: copy docker-compose file
+  copy:
+    src: docker-compose.yaml
+    dest: /boot/pimba/docker-compose.yaml
+
+- name: systemd service for docker-compose
+  copy:
+    src: pimba.service
+    dest: /etc/systemd/system/pimba.service
+
+- name: enable and start pimba systemd service
+  systemd: name=pimba.service enabled=yes state=started daemon_reload=yes

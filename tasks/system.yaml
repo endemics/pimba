@@ -1,0 +1,5 @@
+- name: configure terminal to use us keyboard
+  lineinfile:
+    path: /etc/default/keyboard
+    regexp: '^XKBLAYOUT='
+    line: XKBLAYOUT="us"
