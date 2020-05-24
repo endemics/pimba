@@ -1,0 +1,8 @@
+- name: Download ini2env and unpack it
+  unarchive:
+    src: https://github.com/endemics/ini2env/releases/download/v0.1.0/ini2env_0.1.0_linux_armhf.tgz
+    remote_src: yes
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: '0755'

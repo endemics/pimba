@@ -1,0 +1,37 @@
+- name: Create musicbox config folder
+  file:
+    path: /boot/config/
+    recurse: yes
+    state: directory
+
+- name: Copy settings.ini file
+  copy:
+    src: files/boot/settings.ini
+    dest: /boot/config/settings.ini
+
+- name: Create musicbox application folders
+  file:
+    path: "{{ item }}"
+    recurse: yes
+    state: directory
+  loop:
+  - /opt/musicbox/
+  - /opt/musicbox/bin
+
+- name: Copy startup.sh
+  copy:
+    src: files/pimusicbox/startup.sh
+    dest: /opt/musicbox/startup.sh
+    mode: 0755
+
+- name: Copy network configuration script
+  copy:
+    src: files/pimusicbox/bin/network.sh
+    dest: /opt/musicbox/bin/network.sh
+    mode: 0755
+
+- name: Copy rc.local script that calls startup.sh
+  copy:
+    src: files/etc/rc.local
+    dest: /etc/rc.local
+    mode: 0755

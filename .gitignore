@@ -1,0 +1,4 @@
+*.zip
+*.img
+packer_cache/
+.DS_Store
