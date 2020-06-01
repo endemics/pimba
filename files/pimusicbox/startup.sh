@@ -17,4 +17,4 @@ echo "************************"
 eval "$(/usr/local/bin/ini2env -file "${CONFIG_FILE}" | grep '^INI__.*=".*"$')"
 
 # Setup network
-./bin/network.sh
+/opt/musicbox/bin/network.sh
