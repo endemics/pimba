@@ -21,7 +21,7 @@ if [ "$INI__network__wifi_network" != "" ]; then
         else
             PSK="\"$INI__network__wifi_password\""
         fi
-        cat >/etc/wpa.conf <<EOF
+        cat >/etc/wpa_supplicant/wpa_supplicant.conf <<EOF
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 $WIFICOUNTRY
@@ -33,7 +33,7 @@ network={
 EOF
     else
         # if no password is given, set key_mgmt to NONE
-        cat >/etc/wpa.conf <<EOF
+        cat >/etc/wpa_supplicant/wpa_supplicant.conf <<EOF
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 $WIFICOUNTRY
@@ -45,6 +45,5 @@ network={
 EOF
     fi
 
-    ifup wlan0
     /etc/init.d/networking restart
 fi
