@@ -43,6 +43,10 @@
     },
     {
       "type": "shell",
+      "environment_vars": [
+        "LANG=C",
+        "LC_ALL=C"
+      ],
       "inline": [
         "apt-get update",
         "apt-get install -y ruby",
