@@ -14,7 +14,9 @@ echo "Initializing MusicBox..."
 echo "************************"
 
 # Load configuration
+set -a
 eval "$(/usr/local/bin/ini2env -file "${CONFIG_FILE}" | grep '^INI__.*=".*"$')"
+set +a
 
 # Setup network
 /opt/musicbox/bin/network.sh
