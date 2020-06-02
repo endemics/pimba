@@ -4,6 +4,19 @@ context 'pimusicbox configuration' do
   end
 end
 
+context 'pimusicbox dependencies' do
+
+  describe file('/sbin/wpa_cli') do
+    it { should be_file }
+    it { should be_executable }
+  end
+
+  describe file('/etc/wpa_supplicant/') do
+    it { should be_directory }
+  end
+
+end
+
 context 'pimusicbox directory' do
 
   describe file('/opt/musicbox') do
