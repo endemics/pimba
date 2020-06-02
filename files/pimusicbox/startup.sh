@@ -6,17 +6,15 @@
 
 # Set user vars
 CONFIG_FILE=/boot/config/settings.ini
-NAME="MusicBox"
-DEFAULT_ROOT_PASSWORD="musicbox"
 
 echo "************************"
 echo "Initializing MusicBox..."
 echo "************************"
 
 # Load configuration
-set -a
 eval "$(/usr/local/bin/ini2env -file "${CONFIG_FILE}" | grep '^INI__.*=".*"$')"
-set +a
 
 # Setup network
-/opt/musicbox/bin/network.sh
+# shellcheck source=files/pimusicbox/bin/network.sh
+. /opt/musicbox/bin/network.sh
+set_wifi
