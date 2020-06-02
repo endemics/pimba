@@ -1,5 +1,4 @@
-- name: configure terminal to use us keyboard
-  lineinfile:
-    path: /etc/default/keyboard
-    regexp: '^XKBLAYOUT='
-    line: XKBLAYOUT="us"
+- name: allow glibc to cache timezone
+  copy:
+    src: files/etc/environment
+    dest: /etc/environment

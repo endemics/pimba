@@ -6,3 +6,4 @@
     - include_tasks: tasks/ssh.yaml
     - include_tasks: tasks/ini2env.yaml
     - include_tasks: tasks/pimusicbox.yaml
+    - include_tasks: tasks/system.yaml
