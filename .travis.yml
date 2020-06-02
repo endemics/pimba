@@ -50,3 +50,4 @@ jobs:
       - ls -lh pimba.img
       - zip -9 pimba.img.zip pimba.img
       - ls -lh pimba.img*
+      - sha256sum pimba.img*
