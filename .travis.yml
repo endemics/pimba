@@ -33,8 +33,12 @@ before_script:
 
 jobs:
   include:
+    - stage: lint
+      name: "running shellchecker"
+      script:
+      -  make lint
     - stage: packer
-      name: "enlarge raspbian disk image and activate ssh"
+      name: "build pimba disk image"
       script:
       - sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
       - wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
@@ -46,3 +50,4 @@ jobs:
       - ls -lh pimba.img
       - zip -9 pimba.img.zip pimba.img
       - ls -lh pimba.img*
+      - sha256sum pimba.img*
