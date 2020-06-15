@@ -1,3 +1,5 @@
+all: shrink
+
 lint:
 	docker run --rm -v \
 	  $(PWD):/src \
@@ -9,3 +11,6 @@ lint:
 
 img:
 	sudo env "PATH=$(PATH):$(HOME)/packer/bin:$(HOME)/qemu/bin:/usr/sbin:/sbin" ~/packer/bin/packer build packer.json
+
+shrink: img
+	sudo bash -c "source bin/shrink-img.sh && shrink pimba.img"
