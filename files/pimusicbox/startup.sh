@@ -18,3 +18,4 @@ eval "$(/usr/local/bin/ini2env -file "${CONFIG_FILE}" | grep '^INI__.*=".*"$')"
 # shellcheck source=files/pimusicbox/bin/network.sh
 . /opt/musicbox/bin/network.sh
 set_wifi
+enable_ssh
