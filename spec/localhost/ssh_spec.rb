@@ -1,5 +1,9 @@
-context 'activate ssh' do
-  describe file('/boot/ssh') do
-    it { should exist }
+context 'ssh' do
+  describe package('openssh-server') do
+    it { should be_installed }
+  end
+
+  describe service('ssh') do
+    it { should_not be_enabled }
   end
 end

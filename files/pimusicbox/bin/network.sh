@@ -52,3 +52,10 @@ EOF
         /sbin/wpa_cli -i wlan0 reconfigure
     fi
 }
+
+function enable_ssh() {
+    # shellcheck disable=SC2154
+    if [ "$INI__network__enable_ssh" == "1" ]; then
+        systemctl start ssh
+    fi
+}
