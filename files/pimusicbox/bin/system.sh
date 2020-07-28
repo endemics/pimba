@@ -10,3 +10,13 @@ function resize_disk() {
         /usr/bin/raspi-config nonint do_expand_rootfs
     fi
 }
+
+function change_root_password() {
+    # shellcheck disable=SC2154
+    if [ "$INI__musicbox__root_password" != "" ] && [ "$INI__musicbox__root_password" != "musicbox" ]; then
+        echo "Setting root user password..."
+        echo "root:$INI__musicbox__root_password" | /usr/sbin/chpasswd
+        # remove password from ini file
+        sed -i -e "/^\[musicbox\]/,/^\[.*\]/ s|^\(root_password[ \t]*=[ \t]*\).*$|\1\r|" "${CONFIG_FILE}"
+    fi
+}
