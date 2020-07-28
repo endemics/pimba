@@ -7,6 +7,7 @@ lint:
 	  koalaman/shellcheck:v0.7.0 \
 	    files/pimusicbox/startup.sh \
 	    files/pimusicbox/bin/network.sh \
+	    files/pimusicbox/bin/system.sh \
 	    bin/shrink-img.sh
 
 img:
