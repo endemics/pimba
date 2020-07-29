@@ -7,3 +7,8 @@
   user:
     name: root
     password: '$6$rYwfb2KN$3zDdovjo.YWnRr8bnd6Ibc4bDG4PWvZjQAbx2eYwVIMo2K3odshKeNubbyh0gx76LvctXt4V/zKTeiwyc3H8k0'
+
+- name: Disable pi user
+  user:
+    name: pi
+    password: '*'
