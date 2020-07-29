@@ -12,3 +12,8 @@
   user:
     name: pi
     password: '*'
+
+- name: Make sure disk resize is not automatically set for first boot
+  file:
+    path: /etc/init.d/resize2fs_once
+    state: absent

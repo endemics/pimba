@@ -10,4 +10,8 @@ context 'system' do
     it { should contain 'TZ=:/etc/localtime' }
   end
 
+  describe file('/etc/init.d/resize2fs_once') do
+    it { should_not exist }
+  end
+
 end
