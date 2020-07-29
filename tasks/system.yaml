@@ -2,3 +2,8 @@
   copy:
     src: files/etc/environment
     dest: /etc/environment
+
+- name: Set root password to 'musicbox'
+  user:
+    name: root
+    password: musicbox
