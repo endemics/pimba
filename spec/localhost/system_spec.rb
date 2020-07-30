@@ -14,4 +14,13 @@ context 'system' do
     it { should_not exist }
   end
 
+  describe file('/etc/fstab') do
+    it { should be_file }
+    it { should be_owned_by 'root' }
+    it { should be_grouped_into 'root' }
+    it { should be_mode 644 }
+    it { should contain 'LABEL=boot      /boot' }
+    it { should contain 'LABEL=rootfs    /' }
+  end
+
 end

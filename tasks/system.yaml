@@ -17,3 +17,11 @@
   file:
     path: /etc/init.d/resize2fs_once
     state: absent
+
+- name: Use LABELS in fstab instead of PARTUUID as shrink messes with it
+  copy:
+    src: files/etc/fstab
+    dest: /etc/fstab
+    mode: 0644
+    owner: root
+    group: root
