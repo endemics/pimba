@@ -12,7 +12,7 @@ echo "Initializing MusicBox..."
 echo "************************"
 
 # Load configuration
-eval "$(/usr/local/bin/ini2env -file "${CONFIG_FILE}" | grep '^INI__.*=".*"$')"
+eval "$(/usr/local/bin/ini2env -booleans -file "${CONFIG_FILE}" | grep '^INI__.*=".*"$')"
 
 # System setup
 # shellcheck source=files/pimusicbox/bin/system.sh
