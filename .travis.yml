@@ -46,9 +46,6 @@ jobs:
         while sleep 9m; do
           echo "====[ $SECONDS seconds still running ]===="
         done &
-        sudo env "PATH=$PATH:$HOME/qemu/bin:$HOME/packer/bin/" ~/packer/bin/packer build packer.json
+        make zip
       - ls -lh pimba.img
-      - sudo bash -c "source bin/shrink-img.sh && shrink pimba.img"
-      - zip -9 pimba.img.zip pimba.img
-      - ls -lh pimba.img*
       - sha256sum pimba.img*

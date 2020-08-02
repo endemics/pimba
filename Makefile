@@ -1,4 +1,4 @@
-all: shrink
+all: zip
 
 lint:
 	docker run --rm -v \
@@ -15,3 +15,6 @@ img:
 
 shrink: img
 	sudo bash -c "source bin/shrink-img.sh && shrink pimba.img"
+
+zip: shrink
+	zip -1 pimba.img.zip pimba.img
