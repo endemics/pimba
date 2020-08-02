@@ -8,6 +8,7 @@ function resize_disk() {
         sed -i -e "/^\[musicbox\]/,/^\[.*\]/ s|^\(resize_once[ \t]*=[ \t]*\).*$|\1false\r|" "${CONFIG_FILE}"
         echo "Performing resize..."
         /usr/bin/raspi-config nonint do_expand_rootfs
+        reboot
     fi
 }
 
