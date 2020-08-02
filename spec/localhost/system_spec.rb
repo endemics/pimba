@@ -23,4 +23,12 @@ context 'system' do
     it { should contain 'LABEL=rootfs    /' }
   end
 
+  describe file('/boot/cmdline.txt') do
+    it { should be_file }
+    it { should be_owned_by 'root' }
+    it { should be_grouped_into 'root' }
+    it { should contain 'root=/dev/mmcblk0p2' }
+    it { should_not contain 'init=/usr/lib/raspi-config/init_resize.sh' }
+  end
+
 end
