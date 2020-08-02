@@ -25,3 +25,10 @@
     mode: 0644
     owner: root
     group: root
+
+- name: Remove resize from cmdline and use mmcblk0p2 for rootfs
+  copy:
+    src: files/boot/cmdline.txt
+    dest: /boot/cmdline.txt
+    owner: root
+    group: root
