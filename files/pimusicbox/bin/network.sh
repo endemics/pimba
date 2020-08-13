@@ -1,6 +1,8 @@
 #!/bin/bash
 # Network config
 
+WPA_CONF=/etc/wpa_supplicant/wpa_supplicant.conf
+
 function set_wifi() {
     # shellcheck disable=SC2154
     if [ "$INI__network__wifi_network" != "" ]; then
@@ -25,7 +27,7 @@ function set_wifi() {
             else
                 PSK="\"$INI__network__wifi_password\""
             fi
-            cat >/etc/wpa_supplicant/wpa_supplicant.conf <<EOF
+            cat >"${WPA_CONF}" <<EOF
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 $WIFICOUNTRY
@@ -37,7 +39,7 @@ network={
 EOF
         else
             # if no password is given, set key_mgmt to NONE
-            cat >/etc/wpa_supplicant/wpa_supplicant.conf <<EOF
+            cat >"${WPA_CONF}" <<EOF
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 $WIFICOUNTRY
@@ -49,7 +51,7 @@ network={
 EOF
         fi
 
-        /sbin/wpa_cli -i wlan0 reconfigure
+        wpa_cli -i wlan0 reconfigure
     fi
 }
 

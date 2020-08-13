@@ -7,7 +7,7 @@ function resize_disk() {
         # set resize_once=false in ini file
         sed -i -e "/^\[musicbox\]/,/^\[.*\]/ s|^\(resize_once[ \t]*=[ \t]*\).*$|\1false\r|" "${CONFIG_FILE}"
         echo "Performing resize..."
-        /usr/bin/raspi-config nonint do_expand_rootfs
+        raspi-config nonint do_expand_rootfs
         reboot
     fi
 }
@@ -16,7 +16,7 @@ function change_root_password() {
     # shellcheck disable=SC2154
     if [ "$INI__musicbox__root_password" != "" ] && [ "$INI__musicbox__root_password" != "musicbox" ]; then
         echo "Setting root user password..."
-        echo "root:$INI__musicbox__root_password" | /usr/sbin/chpasswd
+        echo "root:$INI__musicbox__root_password" | chpasswd
         # remove password from ini file
         sed -i -e "/^\[musicbox\]/,/^\[.*\]/ s|^\(root_password[ \t]*=[ \t]*\).*$|\1\r|" "${CONFIG_FILE}"
     fi
