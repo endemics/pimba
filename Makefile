@@ -1,11 +1,14 @@
+all: zip
+
 lint:
 	docker run --rm -v \
 	  $(PWD):/src \
 	  -w /src \
 	  koalaman/shellcheck:v0.7.0 \
-	    -e SC2154 \
 	    files/pimusicbox/startup.sh \
-	    files/pimusicbox/bin/network.sh
+	    files/pimusicbox/bin/network.sh \
+	    files/pimusicbox/bin/system.sh \
+	    bin/shrink-img.sh
 
 test:
 	docker run --rm \
@@ -15,3 +18,9 @@ test:
 
 img:
 	sudo env "PATH=$(PATH):$(HOME)/packer/bin:$(HOME)/qemu/bin:/usr/sbin:/sbin" ~/packer/bin/packer build packer.json
+
+shrink: img
+	sudo bash -c "source bin/shrink-img.sh && shrink pimba.img"
+
+zip: shrink
+	zip -1 pimba.img.zip pimba.img

@@ -2,16 +2,19 @@
 # Network config
 
 function set_wifi() {
+    # shellcheck disable=SC2154
     if [ "$INI__network__wifi_network" != "" ]; then
         # Put wifi settings for wpa roaming
         #
         # If wifi_country is set then include a country=XX line
+        # shellcheck disable=SC2154
         if [ "$INI__network__wifi_country" != "" ]; then
             WIFICOUNTRY="country=$INI__network__wifi_country"
         else
             WIFICOUNTRY=""
         fi
 
+        # shellcheck disable=SC2154
         if [ "$INI__network__wifi_password" != "" ]; then
             password_length=${#INI__network__wifi_password}
             # Passphrases are 8..63 character long.
@@ -47,5 +50,12 @@ EOF
         fi
 
         /sbin/wpa_cli -i wlan0 reconfigure
+    fi
+}
+
+function enable_ssh() {
+    # shellcheck disable=SC2154
+    if [ "$INI__network__enable_ssh" == "1" ]; then
+        systemctl start ssh
     fi
 }

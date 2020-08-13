@@ -24,6 +24,12 @@
     dest: /opt/musicbox/startup.sh
     mode: 0755
 
+- name: Copy system configuration script
+  copy:
+    src: files/pimusicbox/bin/system.sh
+    dest: /opt/musicbox/bin/system.sh
+    mode: 0755
+
 - name: Copy network configuration script
   copy:
     src: files/pimusicbox/bin/network.sh

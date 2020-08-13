@@ -2,3 +2,33 @@
   copy:
     src: files/etc/environment
     dest: /etc/environment
+
+- name: Set root password to 'musicbox'
+  user:
+    name: root
+    password: '$6$rYwfb2KN$3zDdovjo.YWnRr8bnd6Ibc4bDG4PWvZjQAbx2eYwVIMo2K3odshKeNubbyh0gx76LvctXt4V/zKTeiwyc3H8k0'
+
+- name: Disable pi user
+  user:
+    name: pi
+    password: '*'
+
+- name: Make sure disk resize is not automatically set for first boot
+  file:
+    path: /etc/init.d/resize2fs_once
+    state: absent
+
+- name: Use LABELS in fstab instead of PARTUUID as shrink messes with it
+  copy:
+    src: files/etc/fstab
+    dest: /etc/fstab
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Remove resize from cmdline and use mmcblk0p2 for rootfs
+  copy:
+    src: files/boot/cmdline.txt
+    dest: /boot/cmdline.txt
+    owner: root
+    group: root
