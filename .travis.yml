@@ -37,6 +37,10 @@ jobs:
       name: "running shellchecker"
       script:
       -  make lint
+    - stage: test
+      name: "running tests"
+      script:
+      -  make test
     - stage: packer
       name: "build pimba disk image"
       script:
