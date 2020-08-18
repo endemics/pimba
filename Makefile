@@ -22,5 +22,10 @@ img:
 shrink: img
 	sudo bash -c "source bin/shrink-img.sh && shrink pimba.img"
 
-zip: shrink
+img-test: shrink
+	sudo env "PATH=$(PATH):$(HOME)/packer/bin:$(HOME)/qemu/bin:/usr/sbin:/sbin" ~/packer/bin/packer build \
+	  -var "sha256_checksum=`sha256sum pimba.img| awk '{print $$1}'`" \
+	  test.json
+
+zip: img-test
 	zip -1 pimba.img.zip pimba.img
