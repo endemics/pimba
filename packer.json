@@ -11,50 +11,16 @@
     "output_filename" : "/tmp/image",
     "mount_path": "{{ user `img_mount_path` }}"
   }],
-  "provisioners": [
-    {
-      "type": "shell-local",
-      "environment_vars": [
-        "LANG=C",
-        "LC_ALL=C"
-      ],
-      "inline": [
-        "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot playbook.yaml"
-      ]
-    },
-    {
-      "type": "shell",
-      "inline": [ "mkdir -p /tmp/serverspec" ]
-    },
-    {
-      "type": "file",
-      "source": "Rakefile",
-      "destination": "/tmp/serverspec/Rakefile"
-    },
-    {
-      "type": "file",
-      "source": ".rspec",
-      "destination": "/tmp/serverspec/.rspec"
-    },
-    {
-      "type": "file",
-      "source": "spec",
-      "destination": "/tmp/serverspec/"
-    },
-    {
-      "type": "shell",
-      "environment_vars": [
-        "LANG=C",
-        "LC_ALL=C"
-      ],
-      "inline": [
-        "apt-get update",
-        "apt-get install -y ruby",
-        "gem install serverspec --no-ri --no-rdoc",
-        "cd /tmp/serverspec && rake spec"
-      ]
-    }
-  ],
+  "provisioners": [{
+    "type": "shell-local",
+    "environment_vars": [
+      "LANG=C",
+      "LC_ALL=C"
+    ],
+    "inline": [
+      "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot playbook.yaml"
+    ]
+  }],
   "post-processors": [{
     "type": "shell-local",
     "inline": [
