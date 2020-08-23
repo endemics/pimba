@@ -8,6 +8,12 @@
     name: root
     password: '$6$rYwfb2KN$3zDdovjo.YWnRr8bnd6Ibc4bDG4PWvZjQAbx2eYwVIMo2K3odshKeNubbyh0gx76LvctXt4V/zKTeiwyc3H8k0'
 
+- name: Allow root to ssh
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin '
+    line: PermitRootLogin yes
+
 - name: Disable pi user
   user:
     name: pi
