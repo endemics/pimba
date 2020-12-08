@@ -20,6 +20,16 @@ function get_internalcard_id() {
     printf '%s\n' "${CARDS[@]}" | grep -w bcm2835 | awk '{print $2}' | head -1
 }
 
+# Return 0 if there is some hdmi audio device detected by the internal
+# soundcard, 1 otherwise
+function internalcard_hdmi_activated() {
+    if [ -n "$(tvservice -a 2>&1)" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Retrieve the id of the first "usb audio" alsa device
 # Requires an enumerated list of alsa cards in the array CARDS
 function get_usb_id() {

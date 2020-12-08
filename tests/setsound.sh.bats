@@ -101,3 +101,21 @@ source ./files/pimusicbox/bin/setsound.sh
     assert_success
     assert_output '1'
 }
+
+@test "internalcard_hdmi_activated() returns 1 if no hdmi output detected on the internal card" {
+    function tvservice() { echo ''; }
+    export -f tvservice
+    run internalcard_hdmi_activated
+
+    assert_failure 1
+    assert_output ''
+}
+
+@test "internalcard_hdmi_activated() returns 0 if there is an hdmi audio output detected on the internal card" {
+    function tvservice() { echo '     AC3 supported: Max channels: 6, Max samplerate:  48kHz, Max rate  640 kb/s.'; }
+    export -f tvservice
+    run internalcard_hdmi_activated
+
+    assert_success
+    assert_output ''
+}
