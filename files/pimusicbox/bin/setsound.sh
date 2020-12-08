@@ -2,6 +2,8 @@
 #
 # MusicBox Sound configuration script
 
+declare -a CARDS
+
 function enumerate_alsa_cards() {
     while read -r line; do
         echo "$line" | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]'
@@ -10,7 +12,7 @@ function enumerate_alsa_cards() {
 
 # Remove special characters from string provided as argument
 function clean_name() {
-    echo $(echo "$1" | tr -d '[:punct:]')
+    echo "$1" | tr -d '[:punct:]'
 }
 
 # Retrieve the id of the alsa device corresponding to the internal soundcard
@@ -87,7 +89,8 @@ function get_alsa_config() {
         echo "Using audio card$CARD ($OUTPUT)" >&2
     fi
 
-    if [ "$OUTPUT" == "usb" -a "$INI__musicbox__downsample_usb" == "1" ]; then
+    # shellcheck disable=SC2154
+    if [ "$OUTPUT" == "usb" ] && [ "$INI__musicbox__downsample_usb" == "1" ]; then
     # resamples to 44K because of problems with some usb-dacs on 48k (probably
     # related to usb drawbacks of Pi)
     cat << EOF
@@ -153,10 +156,9 @@ EOF
         Center
     do
         # Set initial hardware volume
-        amixer set -c $CARD "$CTL" 96% unmute > /dev/null 2>&1 || true
+        amixer set -c "$CARD" "$CTL" 96% unmute > /dev/null 2>&1 || true
     done
 
     # Set PCM of Pi higher, because it's really quiet otherwise (hardware thing)
     amixer -c 0 set PCM playback 98% > /dev/null 2>&1 || true &
-
 }
