@@ -19,3 +19,9 @@ function clean_name() {
 function get_internalcard_id() {
     printf '%s\n' "${CARDS[@]}" | grep -w bcm2835 | awk '{print $2}' | head -1
 }
+
+# Retrieve the id of the first "usb audio" alsa device
+# Requires an enumerated list of alsa cards in the array CARDS
+function get_usb_id() {
+    printf '%s\n' "${CARDS[@]}" | grep 'usb audio' | awk '{print $2}' | head -1
+}
