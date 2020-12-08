@@ -30,3 +30,29 @@ source ./files/pimusicbox/bin/setsound.sh
     assert_line --index 0 'card 0 alsa bcm2835 alsa device 0 bcm2835 alsa bcm2835 alsa'
     assert_line --index 1 'card 0 alsa bcm2835 alsa device 1 bcm2835 alsa bcm2835 iec958hdmi'
 }
+
+@test "clean_name()" {
+    run clean_name
+    assert_success
+    assert_output ''
+
+    run clean_name aaa
+    assert_success
+    assert_output 'aaa'
+
+    run clean_name aAa
+    assert_success
+    assert_output 'aAa'
+
+    run clean_name a-a
+    assert_success
+    assert_output 'aa'
+
+    run clean_name "[aa]"
+    assert_success
+    assert_output 'aa'
+
+    run clean_name _-.
+    assert_success
+    assert_output ''
+}
