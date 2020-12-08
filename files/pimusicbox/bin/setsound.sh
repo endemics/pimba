@@ -12,3 +12,10 @@ function enumerate_alsa_cards() {
 function clean_name() {
     echo $(echo "$1" | tr -d '[:punct:]')
 }
+
+# Retrieve the id of the alsa device corresponding to the internal soundcard
+# (chipset bcm2835)
+# Requires an enumerated list of alsa cards in the array CARDS
+function get_internalcard_id() {
+    printf '%s\n' "${CARDS[@]}" | grep -w bcm2835 | awk '{print $2}' | head -1
+}
