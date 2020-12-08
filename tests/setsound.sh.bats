@@ -6,42 +6,27 @@ load ${BATS_HELPERS_DIR}/bats-file/load.bash
 source ./files/pimusicbox/bin/setsound.sh
 
 @test "only sourcing the file does nothing" {
-
     run ./files/pimusicbox/bin/setsound.sh
 
     assert_success
     assert_output ''
 }
 
-@test "get_overlay() returns expected result for known overlays" {
-    inputs=( \
-        "audioinjector-pi-soundcard" \
-        "audioinjector-octo-soundcard" \
-        "iqaudio-dac" \
-        "allo-boss-dac" \
-        "allo-piano-dac" \
-        "allo-piano-dac-plus" \
-    )
-    outputs=( \
-        "audioinjector-wm8731-audio" \
-        "audioinjector-addons" \
-        "iqaudio-dacplus,unmute_amp" \
-        "allo-boss-dac-pcm512x-audio" \
-        "allo-piano-dac-pcm512x-audio" \
-        "allo-piano-dac-plus-pcm512x-audio" \
-    )
-
-    for i in ${!inputs[@]}; do
-        run get_overlay "${inputs[$i]}"
-
-        assert_success
-        assert_output "${outputs[$i]}"
-    done
-}
-
-@test "get_overlay() returns expected result for unknown overlay" {
-    run get_overlay foobarbaz
+@test "enumerate_alsa_cards() with no cards returns nothing" {
+    function aplay() { echo ""; }
+    export -f aplay
+    run enumerate_alsa_cards
 
     assert_success
-    assert_output "foobarbaz"
+    assert_output ''
+}
+
+@test "enumerate_alsa_cards() with onboard cards returns 2 lines" {
+    function aplay() { printf "card 0: ALSA [bcm2835 ALSA], device 0: bcm2835 ALSA [bcm2835 ALSA]\ngarbage\ncard 0: ALSA [bcm2835 ALSA], device 1: bcm2835 ALSA [bcm2835 IEC958/HDMI]"; }
+    export -f aplay
+    run enumerate_alsa_cards
+
+    assert_success
+    assert_line --index 0 'card 0 alsa bcm2835 alsa device 0 bcm2835 alsa bcm2835 alsa'
+    assert_line --index 1 'card 0 alsa bcm2835 alsa device 1 bcm2835 alsa bcm2835 iec958hdmi'
 }
