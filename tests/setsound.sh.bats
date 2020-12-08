@@ -119,3 +119,240 @@ source ./files/pimusicbox/bin/setsound.sh
     assert_success
     assert_output ''
 }
+
+@test "get_alsa_config() fails if no argument provided" {
+    run get_alsa_config
+
+    assert_failure 1
+    assert_output --partial "ERROR: "
+}
+
+@test "get_alsa_config() returns an error if no sound card can be found" {
+    function get_internalcard_id() { echo ''; }
+    export -f get_internalcard_id
+
+    function get_usb_id() { echo ''; }
+    export -f get_usb_id
+
+    function amixer() { return 0; }
+    export -f amixer
+
+    run get_alsa_config auto
+    assert_failure 1
+    assert_output '****************************
+WARNING: No audio card found
+****************************'
+
+    run get_alsa_config usb
+    assert_failure 1
+    assert_output '****************************
+WARNING: No audio card found
+****************************'
+
+    run get_alsa_config hdmi
+    assert_failure 1
+    assert_output '****************************
+WARNING: No audio card found
+****************************'
+
+    run get_alsa_config analog
+    assert_failure 1
+    assert_output '****************************
+WARNING: No audio card found
+****************************'
+}
+
+@test "get_alsa_config() returns valid alsa config for analog" {
+    function get_internalcard_id() { echo '0'; }
+    export -f get_internalcard_id
+
+    function amixer() { return 0; }
+    export -f amixer
+
+    run get_alsa_config analog
+
+    assert_success
+    assert_output 'Using audio card0 (analog)
+pcm.!default {
+    type hw
+    card 0
+}
+ctl.!default {
+    type hw
+    card 0
+}'
+}
+
+@test "get_alsa_config() returns valid alsa config for hdmi if connected" {
+    function get_internalcard_id() { echo '0'; }
+    export -f get_internalcard_id
+
+    function internalcard_hdmi_activated() { return 0; }
+    export -f internalcard_hdmi_activated
+
+    function amixer() { return 0; }
+    export -f amixer
+
+    run get_alsa_config hdmi
+
+    assert_success
+    assert_output 'Using audio card0 (hdmi)
+pcm.!default {
+    type hw
+    card 0
+}
+ctl.!default {
+    type hw
+    card 0
+}'
+}
+
+@test "get_alsa_config() fallsback to analog for hdmi if not connected" {
+    function get_internalcard_id() { echo '0'; }
+    export -f get_internalcard_id
+
+    function internalcard_hdmi_activated() { return 1; }
+    export -f internalcard_hdmi_activated
+
+    function amixer() { return 0; }
+    export -f amixer
+
+    run get_alsa_config hdmi
+
+    assert_success
+    assert_output 'ERROR: no audio hdmi detected, falling back to analog output
+Using audio card0 (analog)
+pcm.!default {
+    type hw
+    card 0
+}
+ctl.!default {
+    type hw
+    card 0
+}'
+}
+
+@test "get_alsa_config() returns valid alsa config for usb" {
+    function get_usb_id() { echo '0'; }
+    export -f get_usb_id
+
+    function amixer() { return 0; }
+    export -f amixer
+
+    run get_alsa_config usb
+
+    assert_success
+    assert_output 'Using audio card0 (usb)
+pcm.!default {
+    type hw
+    card 0
+}
+ctl.!default {
+    type hw
+    card 0
+}'
+}
+
+@test "get_alsa_config() returns valid alsa config for usb when downsampling is set" {
+    function get_usb_id() { echo '1'; }
+    export -f get_usb_id
+
+    function amixer() { return 0; }
+    export -f amixer
+
+    INI__musicbox__downsample_usb=1
+    run get_alsa_config usb
+
+    assert_success
+    assert_output 'Using audio card1 (usb)
+pcm.!default {
+    type plug
+    slave.pcm {
+        type dmix
+        ipc_key 1024
+        slave {
+            pcm "hw:1"
+            rate 44100
+        }
+    }
+}
+ctl.!default {
+    type hw
+    card 1
+}'
+}
+
+@test "get_alsa_config() auto privileges usb if present" {
+    function get_usb_id() { echo '1'; }
+    export -f get_usb_id
+
+    function amixer() { return 0; }
+    export -f amixer
+
+    run get_alsa_config auto
+
+    assert_success
+    assert_output 'Using audio card1 (usb)
+pcm.!default {
+    type hw
+    card 1
+}
+ctl.!default {
+    type hw
+    card 1
+}'
+}
+
+@test "get_alsa_config() auto selects hdmi over analog if usb no present and hdmi connected" {
+    function get_usb_id() { echo ''; }
+    export -f get_usb_id
+
+    function get_internalcard_id() { echo '0'; }
+    export -f get_internalcard_id
+
+    function internalcard_hdmi_activated() { return 0; }
+    export -f internalcard_hdmi_activated
+
+    function amixer() { return 0; }
+    export -f amixer
+
+    run get_alsa_config auto
+
+    assert_success
+    assert_output 'Using audio card0 (hdmi)
+pcm.!default {
+    type hw
+    card 0
+}
+ctl.!default {
+    type hw
+    card 0
+}'
+}
+
+@test "get_alsa_config() auto defaults to analog" {
+    function get_usb_id() { echo ''; }
+    export -f get_usb_id
+
+    function get_internalcard_id() { echo '0'; }
+    export -f get_internalcard_id
+
+    function internalcard_hdmi_activated() { return 1; }
+    export -f internalcard_hdmi_activated
+
+    function amixer() { return 0; }
+    export -f amixer
+
+    run get_alsa_config auto
+
+    assert_success
+    assert_output 'Using audio card0 (analog)
+pcm.!default {
+    type hw
+    card 0
+}
+ctl.!default {
+    type hw
+    card 0
+}'
+}
