@@ -137,3 +137,53 @@ ctl.!default {
 EOF
     fi
 }
+
+# Given OUTPUT:CARD_ID, set alsa mixer and volume appropriately
+function set_alsa_mixer() {
+    local OUTPUT
+    local CARD
+
+    if [ $# -ne 1 ] || (echo -n "$1" | grep -q -v -e '^[a-z]\+:[0-9]\+$'); then
+        echo "ERROR: need to provide output:card_id as an argument" >&2
+        return 1
+    fi
+
+    OUTPUT=$(echo "$1" | cut -d : -f 1)
+    CARD=$(echo "$1" | cut -d : -f 2)
+
+    # Reset mixer
+    # amixer cset numid=3 0 > /dev/null 2>&1 || true
+    amixer cset numid=3 0 2>&1 || true
+
+    if [ "$OUTPUT" == "analog" ]; then
+        amixer cset numid=3 1 2>&1 || true
+    elif [ "$OUTPUT" == "hdmi" ]; then
+        amixer cset numid=3 2 2>&1 || true
+    fi
+
+    # Set initial hardware volume
+    for CTL in \
+        Master \
+        PCM \
+        Line \
+        "PCM,1" \
+        Wave \
+        Music \
+        AC97 \
+        "Master Digital" \
+        DAC \
+        "DAC,0" \
+        "DAC,1" \
+        Speaker \
+        Playback \
+        Digital \
+        Aux \
+        Front \
+        Center
+    do
+        amixer set -c "$CARD" "$CTL" 96% unmute 2>&1 || true
+    done
+
+    # Set PCM of Pi higher, because it's really quiet otherwise (hardware thing)
+    amixer -c 0 set PCM playback 98% 2>&1 || true &
+}
