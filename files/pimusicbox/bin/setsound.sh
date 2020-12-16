@@ -89,3 +89,51 @@ function get_output_and_alsa_card_id() {
         echo -n "${OUTPUT}:${CARD}"
     fi
 }
+
+# Given OUTPUT:CARD_ID, returns an appropriate alsa config on stdout
+function get_alsa_config() {
+    local OUTPUT
+    local CARD
+
+    if [ $# -ne 1 ] || (echo -n "$1" | grep -q -v -e '^[a-z]\+:[0-9]\+$'); then
+        echo "ERROR: need to provide output:card_id as an argument" >&2
+        return 1
+    fi
+
+    OUTPUT=$(echo "$1" | cut -d : -f 1)
+    CARD=$(echo "$1" | cut -d : -f 2)
+
+    # shellcheck disable=SC2154
+    if [ "$OUTPUT" == "usb" ] && [ "$INI__musicbox__downsample_usb" == "1" ]; then
+    # resamples to 44K because of problems with some usb-dacs on 48k (probably
+    # related to usb drawbacks of Pi)
+    cat << EOF
+pcm.!default {
+    type plug
+    slave.pcm {
+        type dmix
+        ipc_key 1024
+        slave {
+            pcm "hw:$CARD"
+            rate 44100
+        }
+    }
+}
+ctl.!default {
+    type hw
+    card $CARD
+}
+EOF
+    else
+    cat << EOF
+pcm.!default {
+    type hw
+    card $CARD
+}
+ctl.!default {
+    type hw
+    card $CARD
+}
+EOF
+    fi
+}
