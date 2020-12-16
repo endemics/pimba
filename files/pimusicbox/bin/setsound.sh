@@ -38,8 +38,8 @@ function get_usb_id() {
     printf '%s\n' "${CARDS[@]}" | grep 'usb audio' | awk '{print $2}' | head -1
 }
 
-# Returns the alsa config for the selected OUTPUT on stdout
-function get_alsa_config() {
+# Given an OUTPUT setup, returns the actual output and alsa card id config on stdout
+function get_output_and_alsa_card_id() {
     if [ $# -ne 1 ]; then
         echo "ERROR: need to provide output as an argument" >&2
         return 1
@@ -86,79 +86,6 @@ function get_alsa_config() {
         echo "****************************" >&2
         exit 1
     else
-        echo "Using audio card$CARD ($OUTPUT)" >&2
+        echo -n "${OUTPUT}:${CARD}"
     fi
-
-    # shellcheck disable=SC2154
-    if [ "$OUTPUT" == "usb" ] && [ "$INI__musicbox__downsample_usb" == "1" ]; then
-    # resamples to 44K because of problems with some usb-dacs on 48k (probably
-    # related to usb drawbacks of Pi)
-    cat << EOF
-pcm.!default {
-    type plug
-    slave.pcm {
-        type dmix
-        ipc_key 1024
-        slave {
-            pcm "hw:$CARD"
-            rate 44100
-        }
-    }
-}
-ctl.!default {
-    type hw
-    card $CARD
-}
-EOF
-    else
-    cat << EOF
-pcm.!default {
-    type hw
-    card $CARD
-}
-ctl.!default {
-    type hw
-    card $CARD
-}
-EOF
-    fi
-
-    # Reset mixer
-    amixer cset numid=3 0 > /dev/null 2>&1 || true
-
-    if [ "$OUTPUT" == "analog" ]
-    then
-        # Set mixer to analog output
-        amixer cset numid=3 1 > /dev/null 2>&1 || true
-    elif [ "$OUTPUT" == "hdmi" ]
-    then
-        # Set mixer to hdmi
-        amixer cset numid=3 2 > /dev/null 2>&1 || true
-    fi
-
-    for CTL in \
-        Master \
-        PCM \
-        Line \
-        "PCM,1" \
-        Wave \
-        Music \
-        AC97 \
-        "Master Digital" \
-        DAC \
-        "DAC,0" \
-        "DAC,1" \
-        Speaker \
-        Playback \
-        Digital \
-        Aux \
-        Front \
-        Center
-    do
-        # Set initial hardware volume
-        amixer set -c "$CARD" "$CTL" 96% unmute > /dev/null 2>&1 || true
-    done
-
-    # Set PCM of Pi higher, because it's really quiet otherwise (hardware thing)
-    amixer -c 0 set PCM playback 98% > /dev/null 2>&1 || true &
 }
