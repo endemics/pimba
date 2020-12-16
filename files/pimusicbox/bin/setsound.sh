@@ -2,6 +2,8 @@
 #
 # MusicBox Sound configuration script
 
+# The file containing the alsa configuration
+ETC_ASOUND_CONF=/etc/asound.conf
 declare -a CARDS
 
 function enumerate_alsa_cards() {
@@ -186,4 +188,27 @@ function set_alsa_mixer() {
 
     # Set PCM of Pi higher, because it's really quiet otherwise (hardware thing)
     amixer -c 0 set PCM playback 98% 2>&1 || true &
+}
+
+# The function that wraps it all
+function setsound() {
+    local OUTPUT_CARDID
+    local CONFIG
+
+    # If no output was set in the configuration, default to 'auto'
+    if [ -z "${INI__musicbox__output}" ]; then
+        INI__musicbox__output=auto
+    fi
+
+    mapfile -t CARDS < <(enumerate_alsa_cards)
+    OUTPUT_CARDID=$(get_output_and_alsa_card_id "${INI__musicbox__output}")
+    CONFIG=$(get_alsa_config "${OUTPUT_CARDID}")
+
+    # If alsa configuration has changed, overwrite existing configuration
+    # Note: we use '-s' because '--silent' is not supported on busybox
+    if ! echo "${CONFIG}" | cmp -s "${ETC_ASOUND_CONF}" -; then
+        echo "${CONFIG}" > "${ETC_ASOUND_CONF}"
+    fi
+
+    set_alsa_mixer "${OUTPUT_CARDID}" > /dev/null
 }
