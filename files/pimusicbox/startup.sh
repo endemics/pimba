@@ -25,3 +25,8 @@ change_root_password
 . /opt/musicbox/bin/network.sh
 set_wifi
 enable_ssh
+
+# Setup sound
+# shellcheck source=files/pimusicbox/bin/setsound.sh
+. /opt/musicbox/bin/setsound.sh
+setsound
