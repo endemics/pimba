@@ -7,4 +7,11 @@
     content: deb [arch=armhf] https://download.docker.com/linux/debian {{ debian_distro }} stable
 
 - name: install packages
-  apt: pkg={{ packages_to_install }} state=present update_cache=yes
+  apt:
+    state: present
+    update_cache: yes
+    name:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-compose
