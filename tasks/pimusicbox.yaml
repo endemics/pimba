@@ -36,6 +36,12 @@
     dest: /opt/musicbox/bin/network.sh
     mode: 0755
 
+- name: Copy alsa configuration script
+  copy:
+    src: files/pimusicbox/bin/setsound.sh
+    dest: /opt/musicbox/bin/setsound.sh
+    mode: 0755
+
 - name: Copy rc.local script that calls startup.sh
   copy:
     src: files/etc/rc.local

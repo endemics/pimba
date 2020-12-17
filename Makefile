@@ -8,6 +8,7 @@ lint:
 	    files/pimusicbox/startup.sh \
 	    files/pimusicbox/bin/network.sh \
 	    files/pimusicbox/bin/system.sh \
+	    files/pimusicbox/bin/setsound.sh \
 	    bin/shrink-img.sh
 
 test:
