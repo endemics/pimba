@@ -29,24 +29,26 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # - name: Set up QEMU
-      #   id: qemu
-      #   uses: docker/setup-qemu-action@v1
-      #   with:
-      #     image: tonistiigi/binfmt:latest
-      #     platforms: arm
+      - name: install kpartx
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y kpartx
 
-      - name: Validate Template
-        uses: endemics/packer-github-actions@c0173ddff61ac8263a4e105af3709e6f4293e5e6
-        with:
-          command: validate
-          target: packer.json
+      - name: build qemu
+        run: |
+          bash bin/travis-qemu.sh
+          sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
 
-      - name: Download Raspbian iso 
-        run: wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
+      - name: build packer-builder-arm-image 
+        run: |
+          bash bin/travis-packer.sh
 
-      - name: Build Artifact
-        uses: endemics/packer-github-actions@c0173ddff61ac8263a4e105af3709e6f4293e5e6
-        with:
-          command: build
-          target: packer.json
+      - name: Download raspbian iso
+        run: |
+          wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
+
+      - name: build pimba image 
+        run: |
+          make zip
+          ls -lh pimba.img
+          sha256sum pimba.img*
