@@ -34,14 +34,38 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y kpartx
 
+      - name: Cache qemu
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-qemu
+        with:
+          path: ~/qemu
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('bin/build-qemu.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Cache packer
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-packer
+        with:
+          path: ~/packer
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('bin/build-packer.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: build qemu
         run: |
-          bash bin/travis-qemu.sh
+          bash bin/build-qemu.sh
           sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
 
       - name: build packer-builder-arm-image 
         run: |
-          bash bin/travis-packer.sh
+          bash bin/build-packer.sh
 
       - name: Download raspbian iso
         run: |

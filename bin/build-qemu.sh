@@ -36,9 +36,4 @@ cd "qemu-$VERSION"
 make -j4
 make install
 
-# Install the good stuff from https://github.com/dhruvvyas90/qemu-rpi-kernel
-mkdir -p $HOME/qemu/rpi-kernel
-wget -nv 'https://github.com/dhruvvyas90/qemu-rpi-kernel/blob/master/versatile-pb.dtb?raw=true' -O $HOME/qemu/rpi-kernel/versatile-pb.dtb
-wget -nv 'https://github.com/dhruvvyas90/qemu-rpi-kernel/blob/master/kernel-qemu-4.14.79-stretch?raw=true' -O $HOME/qemu/rpi-kernel/kernel-qemu-4.14.79-stretch
-
 echo "$VERSION $TARGETS" > $HOME/qemu/.build
