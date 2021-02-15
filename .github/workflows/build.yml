@@ -1,0 +1,78 @@
+---
+name: build
+
+on:
+  push:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Lint
+        run: make lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Lint
+        run: make test
+
+  packer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: install kpartx
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y kpartx
+
+      - name: Cache qemu
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-qemu
+        with:
+          path: ~/qemu
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('bin/build-qemu.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Cache packer
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-packer
+        with:
+          path: ~/packer
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('bin/build-packer.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: build qemu
+        run: |
+          bash bin/build-qemu.sh
+          sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
+
+      - name: build packer-builder-arm-image 
+        run: |
+          bash bin/build-packer.sh
+
+      - name: Download raspbian iso
+        run: |
+          wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
+
+      - name: build pimba image 
+        run: |
+          make zip
+          ls -lh pimba.img
+          sha256sum pimba.img*
