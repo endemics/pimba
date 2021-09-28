@@ -63,7 +63,7 @@ jobs:
           bash bin/build-qemu.sh
           sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
 
-      - name: build packer-builder-arm-image 
+      - name: build packer-builder-arm-image
         run: |
           bash bin/build-packer.sh
 
@@ -71,7 +71,7 @@ jobs:
         run: |
           wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
 
-      - name: build pimba image 
+      - name: build pimba image
         run: |
           make zip
           ls -lh pimba.img
