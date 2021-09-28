@@ -5,7 +5,6 @@
   "builders": [{
     "type": "arm-image",
     "iso_url" : "2019-04-08-raspbian-stretch-lite.zip",
-    "iso_checksum_type" : "sha256",
     "iso_checksum" : "03ec326d45c6eb6cef848cf9a1d6c7315a9410b49a276a6b28e67a40b11fdfcf",
     "target_image_size" : 5368709120,
     "output_filename" : "/tmp/image",

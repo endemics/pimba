@@ -6,7 +6,6 @@
   "builders": [{
     "type": "arm-image",
     "iso_url" : "pimba.img",
-    "iso_checksum_type" : "sha256",
     "iso_checksum" : "{{ user `sha256_checksum` }}",
     "image_type": "raspberrypi",
     "target_image_size" : 5368709120,
