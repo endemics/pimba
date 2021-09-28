@@ -6,12 +6,12 @@
 
 - name: copy docker-compose file
   copy:
-    src: docker-compose.yaml
+    src: files/boot/docker-compose.yaml
     dest: /boot/pimba/docker-compose.yaml
 
 - name: systemd service for docker-compose
   copy:
-    src: pimba.service
+    src: files/etc/pimba.service
     dest: /etc/systemd/system/pimba.service
 
 - name: enable and start pimba systemd service
