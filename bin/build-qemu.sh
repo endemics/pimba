@@ -37,3 +37,4 @@ make -j4
 make install
 
 echo "$VERSION $TARGETS" > $HOME/qemu/.build
+echo -e "\033[32mQemu version ${VERSION} successfully build\033[0m"

@@ -2,7 +2,11 @@
 - hosts: all
   gather_facts: yes
   become: yes
+  vars:
+    debian_distro: stretch
   tasks:
     - include_tasks: tasks/ini2env.yaml
     - include_tasks: tasks/pimusicbox.yaml
     - include_tasks: tasks/system.yaml
+    - include_tasks: tasks/docker.yaml
+    - include_tasks: tasks/pimba.yaml

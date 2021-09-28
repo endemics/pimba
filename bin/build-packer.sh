@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION=${PACKER_VERSION:=1.5.6}
+VERSION=${PACKER_VERSION:=1.7.3}
 
 if echo "${VERSION}" | cmp --silent ${HOME}/packer/.build -; then
   echo "packer ${VERSION} up to date!"
@@ -26,3 +26,4 @@ go build
 mv packer-builder-arm-image ${HOME}/packer/bin/packer-builder-arm-image
 
 echo "${VERSION}" > ${HOME}/packer/.build
+echo -e "\033[32mPacker version ${VERSION} successfully build\033[0m"
