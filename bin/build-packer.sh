@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 VERSION=${PACKER_VERSION:=1.5.6}
 
