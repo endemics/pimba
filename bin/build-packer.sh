@@ -26,4 +26,4 @@ go build
 mv packer-builder-arm-image ${HOME}/packer/bin/packer-builder-arm-image
 
 echo "${VERSION}" > ${HOME}/packer/.build
-echo "\033[32mPacker version ${VERSION} successfully build\033[0m"
+echo -e "\033[32mPacker version ${VERSION} successfully build\033[0m"
