@@ -79,3 +79,9 @@ jobs:
           make zip
           ls -lh pimba.img
           sha256sum pimba.img*
+
+      - name: Upload zipped image
+        uses: actions/upload-artifact@v2
+        with:
+          name: pimba image
+          path: pimba.img.zip
