@@ -1,11 +1,11 @@
 {
   "variables": {
-    "img_mount_path": "/mnt/raspbian"
+    "img_mount_path": "/mnt/raspios"
   },
   "builders": [{
     "type": "arm-image",
-    "iso_url" : "2019-04-08-raspbian-stretch-lite.zip",
-    "iso_checksum" : "03ec326d45c6eb6cef848cf9a1d6c7315a9410b49a276a6b28e67a40b11fdfcf",
+    "iso_url" : "2021-05-07-raspios-buster-armhf-lite.zip",
+    "iso_checksum" : "c5dad159a2775c687e9281b1a0e586f7471690ae28f2f2282c90e7d59f64273c",
     "target_image_size" : 5368709120,
     "output_filename" : "/tmp/image",
     "mount_path": "{{ user `img_mount_path` }}"

@@ -70,9 +70,9 @@ jobs:
         run: |
           bash bin/build-packer.sh
 
-      - name: Download raspbian iso
+      - name: Download raspios iso
         run: |
-          wget -nv https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2019-04-09/2019-04-08-raspbian-stretch-lite.zip
+          wget -nv https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
 
       - name: build pimba image
         run: |

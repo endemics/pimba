@@ -4,7 +4,7 @@ lint:
 	docker run --rm -v \
 	  $(PWD):/src \
 	  -w /src \
-	  koalaman/shellcheck:v0.7.0 \
+	  koalaman/shellcheck:v0.7.2 \
 	    files/pimusicbox/startup.sh \
 	    files/pimusicbox/bin/network.sh \
 	    files/pimusicbox/bin/system.sh \
