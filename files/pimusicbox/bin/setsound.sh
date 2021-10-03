@@ -114,7 +114,7 @@ function get_i2s_card_id() {
         return 1
     fi
     local I2S_NAME
-    I2S_NAME=$(clean_name $1)
+    I2S_NAME=$(clean_name "$1")
     printf '%s\n' "${CARDS[@]}" | grep "$I2S_NAME" | awk '{print $2}' | head -1
 }
 
