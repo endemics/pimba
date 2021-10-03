@@ -118,6 +118,30 @@ function get_i2s_card_id() {
     printf '%s\n' "${CARDS[@]}" | grep "$I2S_NAME" | awk '{print $2}' | head -1
 }
 
+# get overlay for i2s device
+function i2s_overlay() {
+    if [ $# -ne 1 ]; then
+        echo "ERROR: need one (and only one) i2s card name as argument"
+        return 1
+    fi
+    local OVERLAY
+    declare -A custom_overlay_map=(
+        [wolfson]="wsp"
+        [phatdac]="hifiberry_dac"
+        [iqaudio-dacplus]="iqaudio-dacplus,unmute_amp"
+        [allo-boss-dac]="allo-boss-dac-pcm512x-audio"
+        [allo-piano-dac]="allo-piano-dac-pcm512x-audio"
+        [allo-piano-dac-plus]="allo-piano-dac-plus-pcm512x-audio"
+    )
+
+    if [ -n "${custom_overlay_map[$1]}" ]; then
+        OVERLAY="${custom_overlay_map[$1]}"
+    else
+        OVERLAY="$1"
+    fi
+    echo "${OVERLAY}"
+}
+
 # Given an OUTPUT setup, returns the actual output and alsa card id config on stdout
 function get_output_and_alsa_card_id() {
     if [ $# -ne 1 ]; then
