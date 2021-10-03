@@ -29,4 +29,15 @@ source ./files/pimusicbox/bin/setsound.sh
 
     assert_success
     assert_output '1'
+
+    CARDS=(
+        'card 0 alsa bcm2835 alsa device 0 bcm2835 alsa bcm2835 alsa'
+        'card 0 alsa bcm2835 alsa device 1 bcm2835 alsa bcm2835 iec958hdmi'
+        'card 1 audio usb  audio device 0 usb audio usb audio'
+    )
+    run get_usb_id
+
+    assert_success
+    assert_output '1'
+
 }
