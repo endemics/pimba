@@ -40,6 +40,43 @@ function get_usb_id() {
     printf '%s\n' "${CARDS[@]}" | grep 'usb audio' | awk '{print $2}' | head -1
 }
 
+# Return 0 if the given output argument is a supported i2s card.
+# 1 otherwise
+function is_supported_i2s() {
+    if [ $# -ne 1 ]; then
+        echo "ERROR: need one (and only one) i2s card name as argument"
+        return 1
+    fi
+
+    # List of supported output values for i2s cards:
+    supported_i2s_output_names=(
+        "hifiberry_dac"
+        "hifiberry_digi"
+        "hifiberry_dacplus"
+        "hifiberry_amp"
+        "justboom_dac"
+        "justboom_digi"
+        "iqaudio_dacplus"
+        "iqaudio_digi_wm8804_audio"
+        "audioinjector-wm8731-audio"
+        "audioinjector-addons"
+        "allo-boss-dac"
+        "allo-piano-dac"
+        "allo-piano-dac-plus"
+        "allo_digione"
+        "wolfson"
+        "phatdac"
+    )
+
+    MATCHING_I2S=$(printf '%s\n' "${supported_i2s_output_names[@]}" | grep "${1}$")
+    if [ -n "$MATCHING_I2S" ]; then
+        return 0
+    else
+        echo "ERROR: i2s card '$1' not supported" >&2
+        return 1
+    fi
+}
+
 # Some i2s cards have alsa names that do not match the 'output'
 # configuration value
 function get_i2s_alsa_name() {
