@@ -154,7 +154,6 @@ function set_alsa_mixer() {
     CARD=$(echo "$1" | cut -d : -f 2)
 
     # Reset mixer
-    # amixer cset numid=3 0 > /dev/null 2>&1 || true
     amixer cset numid=3 0 2>&1 || true
 
     if [ "$OUTPUT" == "analog" ]; then
