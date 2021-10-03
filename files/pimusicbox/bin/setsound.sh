@@ -106,6 +106,18 @@ function get_i2s_alsa_name() {
     echo "${ALSA_NAME}"
 }
 
+# Retrieves the id of the first alsa device matching the i2s card name
+# Requires an enumerated list of alsa cards in the array CARDS
+function get_i2s_card_id() {
+    if [ $# -ne 1 ]; then
+        echo "ERROR: need one (and only one) i2s card name as argument"
+        return 1
+    fi
+    local I2S_NAME
+    I2S_NAME=$(clean_name $1)
+    printf '%s\n' "${CARDS[@]}" | grep "$I2S_NAME" | awk '{print $2}' | head -1
+}
+
 # Given an OUTPUT setup, returns the actual output and alsa card id config on stdout
 function get_output_and_alsa_card_id() {
     if [ $# -ne 1 ]; then
