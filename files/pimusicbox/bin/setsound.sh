@@ -40,6 +40,35 @@ function get_usb_id() {
     printf '%s\n' "${CARDS[@]}" | grep 'usb audio' | awk '{print $2}' | head -1
 }
 
+# Some i2s cards have alsa names that do not match the 'output'
+# configuration value
+function get_i2s_alsa_name() {
+    if [ $# -ne 1 ]; then
+        echo "ERROR: need one (and only one) i2s card name as argument"
+        return 1
+    fi
+
+    if [ "$1" == "phatdac" ]; then
+        echo "WARNING: phatdac option is deprecated, use hifiberry_dac instead" >&2
+    fi
+
+    local ALSA_NAME
+    declare -A output_name_to_alsa_name=(
+        [wolfson]="wsp"
+        [iqaudio-dacplus]="iqaudio-dac"
+        [audioinjector-wm8731-audio]="audioinjector-pi-soundcard"
+        [audioinjector-addons]="audioinjector-octo-soundcard"
+        [phatdac]="hifiberry_dac"
+    )
+
+    if [ -n "${output_name_to_alsa_name[$1]}" ]; then
+        ALSA_NAME="${output_name_to_alsa_name[$1]}"
+    else
+        ALSA_NAME="$1"
+    fi
+    echo "${ALSA_NAME}"
+}
+
 # Given an OUTPUT setup, returns the actual output and alsa card id config on stdout
 function get_output_and_alsa_card_id() {
     if [ $# -ne 1 ]; then
