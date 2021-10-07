@@ -29,9 +29,9 @@ services:
         volumes:
             - /etc/asound.conf:/etc/asound.conf:ro
             - /etc/avahi/services:/etc/avahi/services
-            - /home/pi/config/settings.ini:/boot/config/settings.ini
+            - /boot/config/settings.ini:/boot/config/settings.ini
         ports:
             - "80:6680"
             - "6600:6600"
         image: pimba/mopidy:latest
-        command: -o mpd/hostname=0.0.0.0 -o http/hostname=0.0.0.0
+        command: --config /boot/config/settings.ini -o mpd/hostname=0.0.0.0 -o http/hostname=0.0.0.0
