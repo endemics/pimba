@@ -17,7 +17,7 @@ cd $HOME
 rm -rf qemu
 
 # Checking for a tarball before downloading makes testing easier :-)
-test -f "qemu-$VERSION.tar.bz2" || wget -nv "http://wiki.qemu-project.org/download/qemu-$VERSION.tar.bz2"
+test -f "qemu-$VERSION.tar.bz2" || wget -nv "https://download.qemu.org/qemu-$VERSION.tar.bz2"
 tar -xjf "qemu-$VERSION.tar.bz2"
 cd "qemu-$VERSION"
 
