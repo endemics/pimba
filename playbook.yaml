@@ -3,7 +3,7 @@
   gather_facts: yes
   become: yes
   vars:
-    debian_distro: buster
+    debian_distro: bullseye
   tasks:
     - include_tasks: tasks/ini2env.yaml
     - include_tasks: tasks/pimusicbox.yaml
