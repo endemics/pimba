@@ -24,7 +24,7 @@ cd packer-plugin-arm-image
 git checkout v0.2.0
 go mod download
 go build
-mv packer-plugin-arm-image ${HOME}/packer/bin/packer-builder-arm-image
+mv packer-plugin-arm-image ${HOME}/packer/bin/packer-plugin-arm-image
 
 echo "${VERSION}" > ${HOME}/packer/.build
 echo -e "\033[32mPacker version ${VERSION} successfully build\033[0m"
