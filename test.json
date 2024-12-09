@@ -41,6 +41,7 @@
       "inline": [
         "apt-get update",
         "apt-get install -y ruby",
+        "gem install net-ssh --no-ri --no-rdoc -v 6.1.0",
         "gem install serverspec --no-ri --no-rdoc -v 2.41.8",
         "cd /tmp/serverspec && rake spec"
       ]
