@@ -34,10 +34,10 @@ jobs:
           sudo apt update
           sudo apt install -y kpartx
 
-      - name: install ninja build
+      - name: install qemu build dependencies
         run: |
           sudo apt update
-          sudo apt install -y ninja-build
+          sudo apt install -y ninja-build zlib1g zlib1g-dev libglib2.0-dev libpixman-1-dev
 
       - name: install ansible
         run: sudo pip install ansible==2.9.7
