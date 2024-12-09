@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION=${QEMU_VERSION:=4.0.0}
+VERSION=${QEMU_VERSION:=4.2.0}
 ARCHES=${QEMU_ARCHES:=arm}
 TARGETS=${QEMU_TARGETS:=$(echo $ARCHES | sed 's#$# #;s#\([^ ]*\) #\1-softmmu \1-linux-user #g')}
 
@@ -17,7 +17,7 @@ cd $HOME
 rm -rf qemu
 
 # Checking for a tarball before downloading makes testing easier :-)
-test -f "qemu-$VERSION.tar.bz2" || wget -nv "http://wiki.qemu-project.org/download/qemu-$VERSION.tar.bz2"
+test -f "qemu-$VERSION.tar.bz2" || wget -nv "https://download.qemu.org/qemu-$VERSION.tar.bz2"
 tar -xjf "qemu-$VERSION.tar.bz2"
 cd "qemu-$VERSION"
 

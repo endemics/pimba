@@ -16,7 +16,7 @@ test:
 	docker run --rm \
 	    -v $(PWD):/src \
 	    -w /src \
-	    dduportal/bats:1.1.0 tests/*.bats
+	    bats/bats:1.11.1 tests/*.bats
 	@echo "\033[32mPimba scripts test OK\033[0m"
 
 img:

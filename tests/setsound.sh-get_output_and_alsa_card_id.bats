@@ -1,7 +1,9 @@
 #!/usr/bin/env bats
-load ${BATS_HELPERS_DIR}/bats-support/load.bash
-load ${BATS_HELPERS_DIR}/bats-assert/load.bash
-load ${BATS_HELPERS_DIR}/bats-file/load.bash
+setup() {
+    bats_load_library bats-support
+    bats_load_library bats-assert
+    bats_load_library bats-file
+}
 
 source ./files/pimusicbox/bin/setsound.sh
 

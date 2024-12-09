@@ -1,11 +1,11 @@
 #!/usr/bin/env bats
-load ${BATS_HELPERS_DIR}/bats-support/load.bash
-load ${BATS_HELPERS_DIR}/bats-assert/load.bash
-load ${BATS_HELPERS_DIR}/bats-file/load.bash
-
 source ./files/pimusicbox/bin/system.sh
 
 setup() {
+    bats_load_library bats-support
+    bats_load_library bats-assert
+    bats_load_library bats-file
+
     TEST_TEMP_DIR="$(temp_make)"
     BATSLIB_FILE_PATH_REM="#${TEST_TEMP_DIR}"
     BATSLIB_FILE_PATH_ADD='<temp>'

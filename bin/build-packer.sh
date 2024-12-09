@@ -15,15 +15,16 @@ rm -rf packer
 mkdir -p packer/{bin,build}
 
 # Checking for a tarball before downloading makes testing easier :-)
-test -f "packer_${VERSION}_linux_amd64.zip" || wget "https://releases.hashicorp.com/packer/${VERSION}/packer_${VERSION}_linux_amd64.zip"
+test -f "packer_${VERSION}_linux_amd64.zip" || wget -nv "https://releases.hashicorp.com/packer/${VERSION}/packer_${VERSION}_linux_amd64.zip"
 unzip "packer_${VERSION}_linux_amd64.zip" -d packer/bin
 
 cd ${HOME}/packer/build
-git clone https://github.com/solo-io/packer-builder-arm-image
-cd packer-builder-arm-image
+git clone https://github.com/solo-io/packer-plugin-arm-image.git/
+cd packer-plugin-arm-image
+git checkout v0.2.0
 go mod download
 go build
-mv packer-builder-arm-image ${HOME}/packer/bin/packer-builder-arm-image
+mv packer-plugin-arm-image ${HOME}/packer/bin/packer-plugin-arm-image
 
 echo "${VERSION}" > ${HOME}/packer/.build
 echo -e "\033[32mPacker version ${VERSION} successfully build\033[0m"
