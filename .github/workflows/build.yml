@@ -31,8 +31,13 @@ jobs:
 
       - name: install kpartx
         run: |
-          sudo apt-get update
-          sudo apt-get install -y kpartx
+          sudo apt update
+          sudo apt install -y kpartx
+
+      - name: install ninja build
+        run: |
+          sudo apt update
+          sudo apt install -y ninja-build
 
       - name: install ansible
         run: sudo pip install ansible==2.9.7
