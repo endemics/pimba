@@ -31,6 +31,21 @@ cd "qemu-$VERSION"
   --disable-gcrypt \
   --disable-nettle \
   --disable-curses \
+  --disable-spice \
+  --disable-spice-protocol \
+  --disable-alsa \
+  --disable-jack \
+  --disable-sndio \
+  --disable-pa \
+  --disable-gio \
+  --disable-pipewire \
+  --disable-libudev \
+  --disable-libusb \
+  --disable-mpath \
+  --disable-u2f \
+  --disable-virglrenderer \
+  --disable-opengl \
+  --disable-xkbcommon \
   --static
 
 make -j4
