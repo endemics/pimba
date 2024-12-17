@@ -24,18 +24,23 @@ jobs:
         run: make test
 
   packer:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: install kpartx
         run: |
-          sudo apt-get update
-          sudo apt-get install -y kpartx
+          sudo apt update
+          sudo apt install -y kpartx
+
+      - name: install qemu build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y ninja-build zlib1g zlib1g-dev libglib2.0-dev libpixman-1-dev
 
       - name: install ansible
-        run: sudo pip install ansible==2.9.7
+        run: sudo pip install ansible==8.5.0
 
       - name: Cache qemu
         uses: actions/cache@v2
