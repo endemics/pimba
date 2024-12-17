@@ -1,4 +1,5 @@
 *.zip
 *.img
+*.img.xz
 packer_cache/
 .DS_Store
