@@ -2,7 +2,7 @@
   "variables": {
     "img_mount_path": "/mnt/pimbatest",
     "sha256_checksum": "",
-    "goss_version": "v0.4.9"
+    "goss_version": "0.4.9"
   },
   "builders": [{
     "type": "arm-image",
@@ -26,7 +26,7 @@
         "LC_ALL=C"
       ],
       "inline": [
-	"curl -L https://github.com/goss-org/goss/releases/download/{{ user `goss_version` }}/goss-linux-arm -o /tmp/goss-linux-arm && chmod a+x /tmp/goss-linux-arm",
+        "curl -L https://github.com/goss-org/goss/releases/download/v{{ user `goss_version` }}/goss-linux-arm -o /tmp/goss-linux-arm && chmod a+x /tmp/goss-linux-arm",
         "cd /tmp/goss && /tmp/goss-linux-arm validate --format documentation --color"
       ]
     }
