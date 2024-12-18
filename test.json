@@ -1,7 +1,8 @@
 {
   "variables": {
     "img_mount_path": "/mnt/pimbatest",
-    "sha256_checksum": ""
+    "sha256_checksum": "",
+    "goss_version": "v0.4.9"
   },
   "builders": [{
     "type": "arm-image",
@@ -10,8 +11,7 @@
     "image_type": "raspberrypi",
     "target_image_size" : 5368709120,
     "output_filename" : "/tmp/testimage",
-    "mount_path": "{{ user `img_mount_path` }}",
-    "goss_version": "v0.4.9"
+    "mount_path": "{{ user `img_mount_path` }}"
   }],
   "provisioners": [
     {
