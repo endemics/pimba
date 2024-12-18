@@ -1,0 +1,6 @@
+package:
+  openssh-server:
+    installed: true
+service:
+  ssh:
+    enabled: false

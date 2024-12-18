@@ -1,7 +1,8 @@
 {
   "variables": {
     "img_mount_path": "/mnt/pimbatest",
-    "sha256_checksum": ""
+    "sha256_checksum": "",
+    "goss_version": "0.4.9"
   },
   "builders": [{
     "type": "arm-image",
@@ -14,23 +15,9 @@
   }],
   "provisioners": [
     {
-      "type": "shell",
-      "inline": [ "mkdir -p /tmp/serverspec" ]
-    },
-    {
       "type": "file",
-      "source": "Rakefile",
-      "destination": "/tmp/serverspec/Rakefile"
-    },
-    {
-      "type": "file",
-      "source": ".rspec",
-      "destination": "/tmp/serverspec/.rspec"
-    },
-    {
-      "type": "file",
-      "source": "spec",
-      "destination": "/tmp/serverspec/"
+      "source": "goss",
+      "destination": "/tmp/"
     },
     {
       "type": "shell",
@@ -39,12 +26,8 @@
         "LC_ALL=C"
       ],
       "inline": [
-        "apt-get update",
-        "apt-get install -y ruby",
-        "gem install net-ssh -N -v 6.1.0",
-        "gem install rspec-its -N -v 1.3.1",
-        "gem install serverspec -N -v 2.41.8",
-        "cd /tmp/serverspec && rake spec"
+        "curl -L https://github.com/goss-org/goss/releases/download/v{{ user `goss_version` }}/goss-linux-arm -o /tmp/goss-linux-arm && chmod a+x /tmp/goss-linux-arm",
+        "cd /tmp/goss && /tmp/goss-linux-arm validate --format documentation --color"
       ]
     }
   ],
