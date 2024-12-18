@@ -1,0 +1,9 @@
+file:
+  /etc/rc.local:
+    exists: true
+    mode: 755
+    owner: root
+    group: root
+    filetype: file
+    # should not contain 'By default this script does nothing.'
+    contents: ['/opt/musicbox/startup.sh']

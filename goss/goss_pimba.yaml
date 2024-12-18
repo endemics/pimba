@@ -1,0 +1,14 @@
+file:
+  /boot/pimba:
+    exists: true
+    filetype: directory
+  /boot/pimba/docker-compose.yaml:
+    exists: true
+    filetype: file
+  /etc/systemd/system/pimba.service:
+    exists: true
+    filetype: file
+
+service:
+  pimba.service:
+    enabled: true

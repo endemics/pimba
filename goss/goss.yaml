@@ -1,0 +1,8 @@
+gossfile:
+  goss_docker.yaml: {}
+  goss_ini2env.yaml: {}
+  goss_pimba.yaml: {}
+  goss_pimusicbox.yaml: {}
+  goss_rclocal.yaml: {}
+  goss_ssh.yaml: {}
+  goss_system.yaml: {}

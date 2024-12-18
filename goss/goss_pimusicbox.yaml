@@ -1,0 +1,46 @@
+file:
+  # pimusicbox configuration
+  /boot/config/settings.ini:
+    exists: true
+    filetype: file
+
+    # pimusicbox dependencies
+  /sbin/wpa_cli:
+    exists: true
+    # FIXME: it should be executable
+    filetype: file
+  /etc/wpa_supplicant:
+    exists: true
+    filetype: directory
+
+    # pimusicbox directory
+  /opt/musicbox:
+    exists: true
+    mode: 755
+    owner: root
+    group: root
+    filetype: directory
+  /opt/musicbox/startup.sh:
+    exists: true
+    mode: 755
+    owner: root
+    group: root
+    filetype: file
+  /opt/musicbox/bin/network.sh:
+    exists: true
+    mode: 755
+    owner: root
+    group: root
+    filetype: file
+  /opt/musicbox/bin/system.sh:
+    exists: true
+    mode: 755
+    owner: root
+    group: root
+    filetype: file
+  /opt/musicbox/bin/setsound.sh:
+    exists: true
+    mode: 755
+    owner: root
+    group: root
+    filetype: file

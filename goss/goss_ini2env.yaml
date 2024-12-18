@@ -1,0 +1,7 @@
+file:
+  /usr/local/bin/ini2env:
+    exists: true
+    mode: 755
+    owner: root
+    group: root
+    filetype: file

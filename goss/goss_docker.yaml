@@ -1,0 +1,10 @@
+package:
+  docker-ce:
+    installed: true
+    name: docker-ce
+  docker-ce-cli:
+    installed: true
+  containerd.io:
+    installed: true
+  docker-compose:
+    installed: true
