@@ -4,11 +4,13 @@
   },
   "builders": [{
     "type": "arm-image",
-    "iso_url" : "2024-11-19-raspios-bookworm-armhf-lite.img.xz",
-    "iso_checksum" : "1dacc70cc09162c995020ac1739ee60e6843cf2bfb393654e694e3f017d781bb",
+    "iso_url" : "2024-11-19-raspios-bookworm-arm64-lite.img.xz",
+    "iso_checksum" : "6ac3a10a1f144c7e9d1f8e568d75ca809288280a593eb6ca053e49b539f465a4",
     "target_image_size" : 5368709120,
     "output_filename" : "/tmp/image",
-    "mount_path": "{{ user `img_mount_path` }}"
+    "mount_path": "{{ user `img_mount_path` }}",
+    "disable_embedded": true,
+    "qemu_binary": "/usr/local/bin/qemu-aarch64-static"
   }],
   "provisioners": [{
     "type": "shell-local",

@@ -69,15 +69,15 @@ jobs:
       - name: build qemu
         run: |
           bash bin/build-qemu.sh
-          sudo ln -s $HOME/qemu/bin/qemu-arm /usr/local/bin/qemu-arm-static
+          sudo ln -s $HOME/qemu/bin/qemu-aarch64 /usr/local/bin/qemu-aarch64-static
 
       - name: build packer-builder-arm-image
         run: |
           bash bin/build-packer.sh
 
-      - name: Download raspberrypios 32 bits iso
+      - name: Download raspberrypios 64 bits iso
         run: |
-          wget -nv https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-11-19/2024-11-19-raspios-bookworm-armhf-lite.img.xz
+          wget -nv https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2024-11-19/2024-11-19-raspios-bookworm-arm64-lite.img.xz
 
       - name: build pimba image
         run: |

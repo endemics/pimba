@@ -26,7 +26,7 @@
         "LC_ALL=C"
       ],
       "inline": [
-        "curl -L https://github.com/goss-org/goss/releases/download/v{{ user `goss_version` }}/goss-linux-arm -o /tmp/goss-linux-arm && chmod a+x /tmp/goss-linux-arm",
+        "curl -Ls https://github.com/goss-org/goss/releases/download/v{{ user `goss_version` }}/goss-linux-arm -o /tmp/goss-linux-arm && chmod a+x /tmp/goss-linux-arm",
         "cd /tmp/goss && /tmp/goss-linux-arm validate --format documentation --color"
       ]
     }
