@@ -75,9 +75,9 @@ jobs:
         run: |
           bash bin/build-packer.sh
 
-      - name: Download raspberrypios oldstable 32 bits iso
+      - name: Download raspberrypios 32 bits iso
         run: |
-          wget -nv https://downloads.raspberrypi.com/raspios_oldstable_lite_armhf/images/raspios_oldstable_lite_armhf-2024-10-28/2024-10-22-raspios-bullseye-armhf-lite.img.xz
+          wget -nv https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2024-11-19/2024-11-19-raspios-bookworm-armhf-lite.img.xz
 
       - name: build pimba image
         run: |
