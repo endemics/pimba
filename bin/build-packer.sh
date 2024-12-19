@@ -21,7 +21,6 @@ unzip "packer_${VERSION}_linux_amd64.zip" -d packer/bin
 cd ${HOME}/packer/build
 git clone https://github.com/solo-io/packer-plugin-arm-image.git/
 cd packer-plugin-arm-image
-git checkout v0.2.0
 go mod download
 go build
 mv packer-plugin-arm-image ${HOME}/packer/bin/packer-plugin-arm-image

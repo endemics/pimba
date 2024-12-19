@@ -11,7 +11,9 @@
     "image_type": "raspberrypi",
     "target_image_size" : 5368709120,
     "output_filename" : "/tmp/testimage",
-    "mount_path": "{{ user `img_mount_path` }}"
+    "mount_path": "{{ user `img_mount_path` }}",
+    "disable_embedded": true,
+    "qemu_binary": "/usr/local/bin/qemu-aarch64-static"
   }],
   "provisioners": [
     {
@@ -26,8 +28,8 @@
         "LC_ALL=C"
       ],
       "inline": [
-        "curl -L https://github.com/goss-org/goss/releases/download/v{{ user `goss_version` }}/goss-linux-arm -o /tmp/goss-linux-arm && chmod a+x /tmp/goss-linux-arm",
-        "cd /tmp/goss && /tmp/goss-linux-arm validate --format documentation --color"
+        "curl -Ls https://github.com/goss-org/goss/releases/download/v{{ user `goss_version` }}/goss-linux-arm64 -o /tmp/goss-linux-arm64 && chmod a+x /tmp/goss-linux-arm64",
+        "cd /tmp/goss && /tmp/goss-linux-arm64 validate --format documentation --color"
       ]
     }
   ],
