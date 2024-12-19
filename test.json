@@ -28,8 +28,8 @@
         "LC_ALL=C"
       ],
       "inline": [
-        "curl -Ls https://github.com/goss-org/goss/releases/download/v{{ user `goss_version` }}/goss-linux-arm -o /tmp/goss-linux-arm && chmod a+x /tmp/goss-linux-arm",
-        "cd /tmp/goss && /tmp/goss-linux-arm validate --format documentation --color"
+        "curl -Ls https://github.com/goss-org/goss/releases/download/v{{ user `goss_version` }}/goss-linux-arm64 -o /tmp/goss-linux-arm64 && chmod a+x /tmp/goss-linux-arm64",
+        "cd /tmp/goss && /tmp/goss-linux-arm64 validate --format documentation --color"
       ]
     }
   ],
