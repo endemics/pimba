@@ -24,6 +24,7 @@ function shrink() {
     check_bin resize2fs
     check_bin parted
     check_bin truncate
+    check_bin fatlabel
 
     local OLD_SIZE
     local BLOCK_SIZE
@@ -45,9 +46,15 @@ function shrink() {
 
 
     LOOP_DEV=$(losetup -O NAME,BACK-FILE -l -n | grep "$IMG_FILE" | sed "s#^/dev/\(loop[0-9]*\) *.*#\1#")
-    local PART_NUM=2
-    local ROOT_PART=/dev/mapper/${LOOP_DEV}p${PART_NUM}
+    local BOOT_PART_NUM=1
+    local ROOT_PART_NUM=2
+    local BOOT_PART=/dev/mapper/${LOOP_DEV}p${BOOT_PART_NUM}
+    local ROOT_PART=/dev/mapper/${LOOP_DEV}p${ROOT_PART_NUM}
     e2fsck -fy "$ROOT_PART"
+
+    # Make sure partitions have the expected label so we can mount them using LABEL in fstab
+    tune2fs -L rootfs "$ROOT_PART"
+    fatlabel "$BOOT_PART" "boot"
 
     BLOCK_SIZE=$(tune2fs -l "$ROOT_PART" | awk '/^Block size/ {print $NF}')
     MIN_BLOCKS=$(resize2fs -P "$ROOT_PART" | awk -F': ' '{print $2}')
@@ -56,8 +63,6 @@ function shrink() {
     EXTRA_BLOCKS=$(echo "1024 * 1024 * 20 / $BLOCK_SIZE" | bc)
     SIZE_BLOCKS=$(echo "$MIN_BLOCKS + $EXTRA_BLOCKS" | bc)
     resize2fs "$ROOT_PART" "$SIZE_BLOCKS"
-    # Make sure it has the label "rootfs" so we can mount it using LABEL in fstab
-    tune2fs -L rootfs "$ROOT_PART"
     sync && sleep 1
     kpartx -d "$IMG_FILE"
 
@@ -65,7 +70,7 @@ function shrink() {
     FIRST_BYTE=$(parted -m "$IMG_FILE" unit B print | tail -1 | cut -d':' -f2 | tr -d 'B')
     LAST_BYTE=$(echo "$FIRST_BYTE + $SIZE_BYTES" | bc)
 
-    parted "$IMG_FILE" rm "$PART_NUM"
+    parted "$IMG_FILE" rm "$ROOT_PART_NUM"
     parted "$IMG_FILE" unit B mkpart primary "$FIRST_BYTE" "$LAST_BYTE"
     FINAL_SIZE=$(parted -m "$IMG_FILE" unit B print free | tail -1 | cut -d':' -f2 | tr -d 'B')
     truncate --size "$FINAL_SIZE" "$IMG_FILE"
