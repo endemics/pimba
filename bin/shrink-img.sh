@@ -56,6 +56,8 @@ function shrink() {
     EXTRA_BLOCKS=$(echo "1024 * 1024 * 20 / $BLOCK_SIZE" | bc)
     SIZE_BLOCKS=$(echo "$MIN_BLOCKS + $EXTRA_BLOCKS" | bc)
     resize2fs "$ROOT_PART" "$SIZE_BLOCKS"
+    # Make sure it has the label "rootfs" so we can mount it using LABEL in fstab
+    tune2fs -L rootfs "$ROOT_PART"
     sync && sleep 1
     kpartx -d "$IMG_FILE"
 
