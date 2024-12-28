@@ -15,9 +15,11 @@
     line: PermitRootLogin yes
 
 - name: Disable pi user
-  user:
-    name: pi
-    password: '*'
+  copy:
+    content: 'pi:*'
+    dest: /boot/userconf.txt
+    owner: root
+    group: root
 
 - name: Make sure disk resize is not automatically set for first boot
   file:
