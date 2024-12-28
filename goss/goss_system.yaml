@@ -27,3 +27,19 @@ file:
     contents: [
       'root=/dev/mmcblk0p2'
     ]
+command:
+  'rootfs label':
+    exit-status: 0
+    exec: "findmnt -n -o LABEL /"
+    stdout:
+      - rootfs
+    stderr: []
+    timeout: 1000
+    skip: false
+  'bootfs label':
+    exit-status: 0
+    exec: "findmnt -n -o LABEL /boot"
+    stdout:
+      - boot
+    stderr: []
+    timeout: 1000
