@@ -17,9 +17,8 @@ file:
     filetype: file
     mode: 644
     contents:
-      and:
-        - 'LABEL=boot      /boot'
-        - 'LABEL=rootfs    /'
+      - 'LABEL=boot      /boot'
+      - 'LABEL=rootfs    /'
   /boot/cmdline.txt:
     exists: true
     owner: root
