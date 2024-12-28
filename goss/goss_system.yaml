@@ -4,8 +4,10 @@ file:
     owner: root
     group: root
     filetype: file
-    # readable by owner, group and others
-    contents: ['TZ=:/etc/localtime']
+    mode:
+      match-regexp: '[0-9][4567][4567][4567]'
+    contents:
+      - 'TZ=:/etc/localtime'
   /etc/init.d/resize2fs_once:
     exists: false
   /etc/fstab:
@@ -14,19 +16,18 @@ file:
     group: root
     filetype: file
     mode: 644
-    contents: [
-      'LABEL=boot      /boot',
-      'LABEL=rootfs    /'
-    ]
+    contents:
+      and:
+        - 'LABEL=boot      /boot'
+        - 'LABEL=rootfs    /'
   /boot/cmdline.txt:
     exists: true
     owner: root
     group: root
     filetype: file
-    # should not contain 'init=/usr/lib/raspi-config/init_resize.sh'
-    contents: [
-      'root=/dev/mmcblk0p2'
-    ]
+    contents:
+        - 'root=/dev/mmcblk0p2'
+        - !'init=/usr/lib/raspi-config/init_resize.sh'
 command:
   'rootfs label':
     exit-status: 0
