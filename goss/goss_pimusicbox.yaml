@@ -7,8 +7,9 @@ file:
     # pimusicbox dependencies
   /sbin/wpa_cli:
     exists: true
-    # FIXME: it should be executable
     filetype: file
+    mode:
+      match-regexp: '[0-9][1357][1357][1357]'
   /etc/wpa_supplicant:
     exists: true
     filetype: directory
