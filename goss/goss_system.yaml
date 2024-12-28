@@ -27,6 +27,12 @@ file:
     contents: [
       'root=/dev/mmcblk0p2'
     ]
+  /boot/userconf.txt:
+    exists: true
+    owner: root
+    group: root
+    filetype: file
+    contents: 'pi:*'
 command:
   'rootfs label':
     exit-status: 0
